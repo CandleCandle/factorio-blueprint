@@ -1,7 +1,8 @@
 
 const assert = require('assert');
-const entity = require('../src/entity2');
+const entity = require('../src/entitytypes');
 const Victor = require('victor');
+const mixwith = require('mixwith');
 
 /*
  *
@@ -15,9 +16,7 @@ const Victor = require('victor');
 describe('entity mixins', function () {
   describe('', function () {
     it('can do filter inserters', function () {
-        class FilterInserter extends entity.mix(entity.BaseEntity).with(entity.Position, entity.Direction, entity.Filters) {
-          /* ... */
-        }
+        const FilterInserter = mixwith.mix(entity.BaseEntity).with(entity.Position, entity.Direction, entity.Filter);
         const fi = new FilterInserter()
                 .name("filter-inserter")
                 .x(4).y(5)

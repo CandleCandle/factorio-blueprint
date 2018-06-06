@@ -31,7 +31,8 @@
   "license": "ISC",
   "dependencies": {
     "prettyjson": "^1.2.1",
-    "victor": "^1.1.0"
+    "victor": "^1.1.0",
+    "mixwith": "^0.1.1"
   },
   "devDependencies": {
     "mocha": "^5.1.1",
