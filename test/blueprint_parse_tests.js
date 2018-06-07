@@ -270,12 +270,12 @@ describe('Blueprint Parsing', function () {
     it('simple example', function () {
       const input = '0eNqVUkFugzAQ/MueTWUgoRGHXvKMKEJgts1KYCPbhCLE37uGKEobpLYX5LFnZzxjJqiaHjtL2kM+ASmjHeSnCRx96LIJe37sEHIgjy0I0GUbUGcGtJEbyKsLzAJI1/gJeTyfBaD25AlXnQWMhe7bCi0TthUEQ8dDRgdHForky17AuC5Yn+/lrWmKCi/llYwNNEVW9eQLPqvvs+9knS9+uT02qFhOk4puIrB6OF+GInYyoLYrbemDF7zBvBI0D9LS0QRx+FisH3MSo2Q+M/nYy6cDAQNZXNYyNHXs45+c9DuHbZ86TO45Wqypb6M1DofpTIMbXWZLk/LvCeJgvOGc/tN5fzMOWZcXyB9+NwFXtG4hZ4fXJD6kmUx38/wFX4PeRw==';
       const bp = new Blueprint().load(input);
-      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
-      console.log("bp grid: ", bp.entityPositionGrid);
+//      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
+//      console.log("bp grid: ", bp.entityPositionGrid);
 
       const entity = bp.findEntity(new Victor(0,0));
 
-      console.log("bp entity: ", entity);
+//      console.log("bp entity: ", entity);
       assert.equal(entity.name, 'power_switch');
       assert.equal(entity.condition.left, 'electronic_circuit');
       assert.equal(entity.condition.right, 40);
