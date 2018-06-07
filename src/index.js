@@ -4,6 +4,7 @@ const prettyJSON = require('prettyjson');
 const Victor = require('victor');
 
 const entityData = require('./defaultentities');
+//const Entity = require('./entitycompat')(entityData);
 const Entity = require('./entity')(entityData);
 const Tile = require('./tile')(entityData);
 const util = require('./util');
