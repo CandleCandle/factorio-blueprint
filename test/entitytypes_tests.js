@@ -1,3 +1,4 @@
+"use strict";
 
 const assert = require('assert');
 const entity = require('../src/entitytypes');
@@ -23,6 +24,7 @@ describe('entity mixins', function () {
                 .direction(6)
                 .filters({0: "stone"})
                 ;
+//        console.log("filter inserter class: ", FilterInserter);
 
         const obj = fi.toObject();
         console.log("obj:", obj);

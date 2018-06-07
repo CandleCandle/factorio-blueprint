@@ -33,8 +33,10 @@ module.exports = function(entityData) {
 //        console.log(entityData);
         const staticEntityData = entityData[nameToKey(name)];
         console.log("static data for: ", name, nameToKey(name), staticEntityData);
-
-        features = []; // least specific to the most specific
+        
+        // least specific to the most specific; thus any specific implementation
+        // can override the generic implementation.
+        features = [];
 
         if (staticEntityData.type === 'item') {
             features.push(entitytypes.Position);
@@ -72,6 +74,10 @@ module.exports = function(entityData) {
                 item = positionGrid[x + ',' + y] || item;
             });
             return item;
+        }
+
+        place() {
+            // xxx 
         }
     }
 

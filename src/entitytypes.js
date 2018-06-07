@@ -1,3 +1,4 @@
+"use strict";
 
 
 const Victor = require('victor');
@@ -32,12 +33,14 @@ class BaseEntity {
 
     /**
      * utility function to wrap the simple getter&builder behaviour
+     * note that use of this function is optional, but the getter/setter
+     * behaviour should be maintained
      * @param {type} name name of the property to get/set
      * @param {type} value if presant, causes the function to set the property and return 'this' for method chaining, if missing, causes the function to return the current value of the property.
      * @return {BaseEntity}
      */
     _property(name, value) {
-        if (!value) return this[name];
+        if (typeof value === 'undefined') return this[name];
         this[name] = value;
         return this;
     }
@@ -59,7 +62,7 @@ class BaseEntity {
 /**
  * Not every placeable entity has/needs a direction: e.g. heat pipes; stone walls; nuclear reactors.
  */
-Direction = (superclass) => class extends superclass {
+const Direction = (superclass) => class extends superclass {
     // direction: int
 
     /**
@@ -79,7 +82,7 @@ Direction = (superclass) => class extends superclass {
 
     toObject() {
         const mine = {
-            direction: this.direction
+            direction: this.direction()
         };
 
         const sup = (super.toObject) ? super.toObject() : {};
@@ -91,7 +94,7 @@ Direction = (superclass) => class extends superclass {
  * Placeable entities must have a position; and by that virtue, are highly likely
  * to also have a width and height.
  */
-Position = (superclass) => class extends superclass {
+const Position = (superclass) => class extends superclass {
     // position: Victor
     // width: int
     // height: int
@@ -101,14 +104,14 @@ Position = (superclass) => class extends superclass {
     }
 
     x(x) {
-        if (!this.position) this.position = new Victor({x: 0, y: 0});
+        if (typeof this._position === 'undefined') this.position(new Victor({x: 0, y: 0}));
         if (!x) return this.position.x;
         this.position.x = x;
         return this;
     }
 
     y(y) {
-        if (!this.position) this.position = new Victor({x: 0, y: 0});
+        if (typeof this._position === 'undefined') this.position(new Victor({x: 0, y: 0}));
         if (!y) return this.position.y;
         this.position.y = y;
         return this;
@@ -155,7 +158,7 @@ Position = (superclass) => class extends superclass {
  * filters: filter inserters & stack filter inserters both have a filters
  * section.
  */
-Filter = (superclass) => class extends superclass {
+const Filter = (superclass) => class extends superclass {
     // filters: object: {int: string}
 
     filters(filters) {
@@ -163,13 +166,13 @@ Filter = (superclass) => class extends superclass {
     }
 
     withFilter(index, type) {
-        this.filters[index] = type;
+        this._filters[index] = type;
         return this;
     }
 
     addFilter(type) {
         // find the next available slot for type.
-        this.filters[this.filters.size] = type;
+        this._filters[this.filters.size] = type;
         return this;
     }
 
@@ -180,7 +183,7 @@ Filter = (superclass) => class extends superclass {
 
     toObject() {
         const mine = {
-            filters: this.filters
+            filters: this._filters
         };
 
         const sup = (super.toObject) ? super.toObject() : {};
@@ -192,7 +195,7 @@ Filter = (superclass) => class extends superclass {
  * Items with an inventory usually have a maximum number of inventory slots and
  * a 'bar' that can stop machines putting items into some
  */
-Inventory = (superclass) => class extends superclass {
+const Inventory = (superclass) => class extends superclass {
     // maxInventory: int
     // bar: int
 
@@ -220,7 +223,7 @@ Inventory = (superclass) => class extends superclass {
     }
 };
 
-CircuitControl = (superclass) => class extends superclass {
+const CircuitControl = (superclass) => class extends superclass {
     
     toObject() {
         const mine = {
@@ -239,7 +242,7 @@ CircuitControl = (superclass) => class extends superclass {
     }
 };
 
-Modules = (superclass) => class extends superclass {
+const Modules = (superclass) => class extends superclass {
     // items: object: {module_type: count}
     // modules: int // max count of modules
 
@@ -268,7 +271,7 @@ Modules = (superclass) => class extends superclass {
 };
 
 
-Recipe = (superclass) => class extends superclass {
+const Recipe = (superclass) => class extends superclass {
     // recipe: string: recipe name
 
     recipe(recipe) {
