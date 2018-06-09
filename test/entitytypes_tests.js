@@ -14,27 +14,33 @@ const mixwith = require('mixwith');
  *
  */
 
+describe('Entity Features', function () {
+
+});
+
 describe('entity mixins', function () {
   describe('', function () {
     it('can do filter inserters', function () {
-        const FilterInserter = mixwith.mix(entity.BaseEntity).with(entity.Position, entity.Direction, entity.Filter);
-        const fi = new FilterInserter()
-                .name("filter-inserter")
-                .x(4).y(5)
-                .direction(6)
-                .filters({0: "stone"})
-                ;
+      const FilterInserter = mixwith.mix(entity.BaseEntity).with(entity.Position, entity.Direction, entity.Filter);
+      const fi = new FilterInserter()
+              .name("filter-inserter")
+              .x(4).y(5)
+              .direction(6)
+              .filters({0: "stone"})
+              ;
 //        console.log("filter inserter class: ", FilterInserter);
 
-        const obj = fi.toObject();
-        console.log("obj:", obj);
+      const obj = fi.toObject();
+      console.log("obj:", obj);
 
-        assert.equal(obj.name, 'filter-inserter');
-        assert.equal(obj.position.x, 4);
-        assert.equal(obj.position.y, 5);
-        assert.equal(obj.direction, 6);
-        assert.equal(obj.filters["0"], 'stone');
+      assert.equal(obj.name, 'filter-inserter');
+      assert.equal(obj.position.x, 4);
+      assert.equal(obj.position.y, 5);
+      assert.equal(obj.direction, 6);
+      assert.equal(obj.filters["0"], 'stone');
 
     });
   });
 });
+
+// vi: sts=2 ts=2 sw=2 et

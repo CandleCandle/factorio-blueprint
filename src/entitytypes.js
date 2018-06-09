@@ -14,36 +14,37 @@ const mixwith = require('mixwith');
  * call the appropriate super.toObject / super.fromObject.
  */
 class BaseEntity {
-    // name
-    // type (item, recipe, tile, virtual, fluid)
+  // name
+  // type (item, recipe, tile, virtual, fluid)
 
-    name(name) {
-        return this._property('_name', name);
-    }
+  name(name) {
+    return this._property('_name', name);
+  }
 
-    toObject() {
-        return {
-            name: this._name
-        };
-    }
+  toObject() {
+    return {
+      name: this._name
+    };
+  }
 
-    fromObject(entityObject) {
-        this._name = entityObject.name;
-    }
+  fromObject(entityObject) {
+    this._name = entityObject.name;
+  }
 
-    /**
-     * utility function to wrap the simple getter&builder behaviour
-     * note that use of this function is optional, but the getter/setter
-     * behaviour should be maintained
-     * @param {type} name name of the property to get/set
-     * @param {type} value if presant, causes the function to set the property and return 'this' for method chaining, if missing, causes the function to return the current value of the property.
-     * @return {BaseEntity}
-     */
-    _property(name, value) {
-        if (typeof value === 'undefined') return this[name];
-        this[name] = value;
-        return this;
-    }
+  /**
+   * utility function to wrap the simple getter&builder behaviour
+   * note that use of this function is optional, but the getter/setter
+   * behaviour should be maintained
+   * @param {type} name name of the property to get/set
+   * @param {type} value if presant, causes the function to set the property and return 'this' for method chaining, if missing, causes the function to return the current value of the property.
+   * @return {BaseEntity}
+   */
+  _property(name, value) {
+    if (typeof value === 'undefined')
+      return this[name];
+    this[name] = value;
+    return this;
+  }
 }
 
 /*
@@ -71,24 +72,24 @@ const Direction = (superclass) => class extends superclass {
      * @return {int, this} when supplied with 0 arguments, returns the direction the entity is facing, when supplied with 'direction' sets the direction and returns the entity itself to allow for method chaining.
      */
     direction(direction) {
-        return this._property('_direction', direction);
+      return this._property('_direction', direction);
     }
 
-
     fromObject(obj) {
-        super.fromObject(obj);
-        if (obj.direction) this.direction(obj.direction);
+      super.fromObject(obj);
+      if (obj.direction)
+        this.direction(obj.direction);
     }
 
     toObject() {
-        const mine = {
-            direction: this.direction()
-        };
+      const mine = {
+        direction: this.direction()
+      };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        return {...sup, ...mine};
+      const sup = (super.toObject) ? super.toObject() : {};
+      return {...sup, ...mine};
     }
-};
+  };
 
 /**
  * Placeable entities must have a position; and by that virtue, are highly likely
@@ -100,29 +101,33 @@ const Position = (superclass) => class extends superclass {
     // height: int
 
     position(position) {
-        return this._property('_position', position);
+      return this._property('_position', position);
     }
 
     x(x) {
-        if (typeof this._position === 'undefined') this.position(new Victor({x: 0, y: 0}));
-        if (!x) return this.position.x;
-        this.position.x = x;
-        return this;
+      if (typeof this._position === 'undefined')
+        this.position(new Victor({x: 0, y: 0}));
+      if (!x)
+        return this.position.x;
+      this.position.x = x;
+      return this;
     }
 
     y(y) {
-        if (typeof this._position === 'undefined') this.position(new Victor({x: 0, y: 0}));
-        if (!y) return this.position.y;
-        this.position.y = y;
-        return this;
+      if (typeof this._position === 'undefined')
+        this.position(new Victor({x: 0, y: 0}));
+      if (!y)
+        return this.position.y;
+      this.position.y = y;
+      return this;
     }
 
     width(width) {
-        return this._property('_width', width);
+      return this._property('_width', width);
     }
 
     height(height) {
-        return this._property('_height', height);
+      return this._property('_height', height);
     }
 
     /**
@@ -130,29 +135,32 @@ const Position = (superclass) => class extends superclass {
      * @param {function} fn 2-parameter function; parameters are (x, y)
      */
     tileDataAction(fn) {
-        for (let y = this.y(); y < (this.y() + this.height()); ++y) {
-            for (let x = this.x(); x < (this.x() + this.width()); ++x) {
-                fn(x, y);
-            }
+      for (let y = this.y(); y < (this.y() + this.height()); ++y) {
+        for (let x = this.x(); x < (this.x() + this.width()); ++x) {
+          fn(x, y);
         }
+      }
     }
 
     fromObject(obj) {
-        super.fromObject(obj);
-        if (obj.position) this.position(new Victor(obj.position));
-        if (obj.width) this.width(obj.width);
-        if (obj.height) this.height(obj.height);
+      super.fromObject(obj);
+      if (obj.position)
+        this.position(new Victor(obj.position));
+      if (obj.width)
+        this.width(obj.width);
+      if (obj.height)
+        this.height(obj.height);
     }
 
     toObject() {
-        const mine = {
-            position: {x: this.position.x, y: this.position.y}
-        };
+      const mine = {
+        position: {x: this.position.x, y: this.position.y}
+      };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        return {...sup, ...mine};
+      const sup = (super.toObject) ? super.toObject() : {};
+      return {...sup, ...mine};
     }
-};
+  };
 
 /**
  * filters: filter inserters & stack filter inserters both have a filters
@@ -162,34 +170,35 @@ const Filter = (superclass) => class extends superclass {
     // filters: object: {int: string}
 
     filters(filters) {
-        return this._property('_filters', filters);
+      return this._property('_filters', filters);
     }
 
     withFilter(index, type) {
-        this._filters[index] = type;
-        return this;
+      this._filters[index] = type;
+      return this;
     }
 
     addFilter(type) {
-        // find the next available slot for type.
-        this._filters[this.filters.size] = type;
-        return this;
+      // find the next available slot for type.
+      this._filters[this.filters.size] = type;
+      return this;
     }
 
     fromObject(obj) {
-        super.fromObject(obj);
-        if (obj.filters) this.filters(obj.filters);
+      super.fromObject(obj);
+      if (obj.filters)
+        this.filters(obj.filters);
     }
 
     toObject() {
-        const mine = {
-            filters: this._filters
-        };
+      const mine = {
+        filters: this._filters
+      };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        return {...sup, ...mine};
+      const sup = (super.toObject) ? super.toObject() : {};
+      return {...sup, ...mine};
     }
-};
+  };
 
 /**
  * Items with an inventory usually have a maximum number of inventory slots and
@@ -200,105 +209,112 @@ const Inventory = (superclass) => class extends superclass {
     // bar: int
 
     bar(bar) {
-        return this._property('_bar', bar);
+      return this._property('_bar', bar);
     }
 
     maxInventory(bar) {
-        return this._property('_maxInventory', bar);
+      return this._property('_maxInventory', bar);
     }
 
     fromObject(obj) {
-        super.fromObject(obj);
-        if (obj.maxInventory) this.maxInventory(obj.maxInventory);
-        if (obj.bar) this.bar(obj.bar);
+      super.fromObject(obj);
+      if (obj.maxInventory)
+        this.maxInventory(obj.maxInventory);
+      if (obj.bar)
+        this.bar(obj.bar);
     }
 
     toObject() {
-        const mine = {
-            bar: this.bar
-        };
+      const mine = {
+        bar: this.bar
+      };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        return {...sup, ...mine};
+      const sup = (super.toObject) ? super.toObject() : {};
+      return {...sup, ...mine};
     }
-};
+  };
 
 const CircuitControl = (superclass) => class extends superclass {
-    
-    toObject() {
-        const mine = {
-            control_behavior: {
-                circuit_condition: {/* more here */},
-                circuit_enable_disable: true
-            }
-        };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        if (sup.control_behavior) {
-            // if we just do '{...sup, ...mine}' then any previous control_behavior would be overwritten
-            mine.control_behavior = {...sup.control_behavior, ...(mine.control_behavior)};
+    toObject() {
+      const mine = {
+        control_behavior: {
+          circuit_condition: {/* more here */},
+          circuit_enable_disable: true
         }
-        return {...sup, ...mine};
+      };
+
+      const sup = (super.toObject) ? super.toObject() : {};
+      if (sup.control_behavior) {
+        // if we just do '{...sup, ...mine}' then any previous control_behavior would be overwritten
+        mine.control_behavior = {...sup.control_behavior, ...(mine.control_behavior)};
+      }
+      return {...sup, ...mine};
     }
-};
+  };
 
 const Modules = (superclass) => class extends superclass {
     // items: object: {module_type: count}
     // modules: int // max count of modules
 
     maxModules(maxModules) {
-        return this._property('_maxModules', maxModules);
+      return this._property('_maxModules', maxModules);
     }
 
     modules(modules) {
-        return this._property('_items', modules);
+      return this._property('_items', modules);
     }
 
     fromObject(obj) {
-        super.fromObject(obj);
-        if (obj.modules) this.maxModules(obj.modules);
-        if (obj.items) this.modules(obj.items);
+      super.fromObject(obj);
+      if (obj.modules)
+        this.maxModules(obj.modules);
+      if (obj.items)
+        this.modules(obj.items);
     }
 
     toObject() {
-        const mine = {
-            items: this.items
-        };
+      const mine = {
+        items: this.items
+      };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        return {...sup, ...mine};
+      const sup = (super.toObject) ? super.toObject() : {};
+      return {...sup, ...mine};
     }
-};
+  };
 
 
 const Recipe = (superclass) => class extends superclass {
     // recipe: string: recipe name
 
     recipe(recipe) {
-        return this._property('_recipe', recipe);
+      return this._property('_recipe', recipe);
     }
 
     fromObject(obj) {
-        super.fromObject(obj);
-        if (obj.recipe) this.recipe(obj.recipe);
+      super.fromObject(obj);
+      if (obj.recipe)
+        this.recipe(obj.recipe);
     }
 
     toObject() {
-        const mine = {
-            recipe: this.recipe
-        };
+      const mine = {
+        recipe: this.recipe
+      };
 
-        const sup = (super.toObject) ? super.toObject() : {};
-        return {...sup, ...mine};
+      const sup = (super.toObject) ? super.toObject() : {};
+      return {...sup, ...mine};
     }
-};
+  };
 
 module.exports = {
-    BaseEntity: BaseEntity,
-    Filter: Filter,
-    Direction: Direction,
-    Position: Position,
-    Inventory: Inventory,
-    Modules: Modules,
-    Recipe: Recipe
+  BaseEntity: BaseEntity,
+  Filter: Filter,
+  Direction: Direction,
+  Position: Position,
+  Inventory: Inventory,
+  Modules: Modules,
+  Recipe: Recipe
 };
+
+// vi: sts=2 ts=2 sw=2 et
