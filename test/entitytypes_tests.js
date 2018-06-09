@@ -15,7 +15,28 @@ const mixwith = require('mixwith');
  */
 
 describe('Entity Features', function () {
+  describe('base entity', function () {
+    // using the mixin structure to ensure that it is tested through the pattern that is used in reality.
+    // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
+    const BaseEntity = mixwith.mix(entity.BaseEntity).with();
 
+    it('can get/set the name property', function () {
+      const entity = new BaseEntity().name('stone-wall');
+      assert.equal(entity.name(), 'stone-wall');
+      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+    });
+    it('can read from an input object', function () {
+      const entity = new BaseEntity();
+      entity.fromObject({name: 'concrete'});
+      assert.equal(entity.name(), 'concrete');
+    });
+    it('can output to an object', function () {
+      const entity = new BaseEntity().name('beacon');
+      const obj = entity.toObject();
+
+      assert.equal(obj.name, 'beacon');
+    });
+  });
 });
 
 describe('entity mixins', function () {
