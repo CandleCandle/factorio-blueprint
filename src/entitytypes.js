@@ -145,7 +145,7 @@ const Position = (superclass) => class extends superclass {
     fromObject(obj) {
       super.fromObject(obj);
       if (obj.position)
-        this.position(new Victor(obj.position));
+        this.position(new Victor(obj.position.x, obj.position.y));
       if (obj.width)
         this.width(obj.width);
       if (obj.height)
@@ -154,7 +154,7 @@ const Position = (superclass) => class extends superclass {
 
     toObject() {
       const mine = {
-        position: {x: this.position.x, y: this.position.y}
+        position: {x: this.x(), y: this.y()}
       };
 
       const sup = (super.toObject) ? super.toObject() : {};

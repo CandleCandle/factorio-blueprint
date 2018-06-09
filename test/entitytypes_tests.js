@@ -33,36 +33,59 @@ describe('Entity Features', function () {
     it('can output to an object', function () {
       const entity = new BaseEntity().name('beacon');
       const obj = entity.toObject();
-
       assert.equal(obj.name, 'beacon');
     });
   });
   describe('entities with positions', function () {
-    // using the mixin structure to ensure that it is tested through the pattern that is used in reality.
     // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
-    const BaseEntity = mixwith.mix(entity.BaseEntity).with(entity.Position);
+    const PositionEntity = mixwith.mix(entity.BaseEntity).with(entity.Position);
 
     it('can get/set the position property', function () {
-      const entity = new BaseEntity().name('stone-wall');
-      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      const entity = new PositionEntity().name('stone-wall');
+      assert.equal(entity.name('stone-wall'), entity);
       assert.equal(entity.position(new Victor(5, -2)), entity);
       assert.deepStrictEqual(entity.position(), new Victor(5,-2));
     });
     it('can get/set the x property', function () {
-      const entity = new BaseEntity().name('stone-wall');
-      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      const entity = new PositionEntity().name('stone-wall');
+      assert.equal(entity.name('stone-wall'), entity);
       assert.equal(entity.x(4), entity);
       assert.equal(entity.x(), 4);
       assert.equal(entity.y(), 0); // default for when only one of x/y is set.
     });
     it('can get/set the y property', function () {
-      const entity = new BaseEntity().name('stone-wall');
-      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      const entity = new PositionEntity().name('stone-wall');
+      assert.equal(entity.name('stone-wall'), entity);
       assert.equal(entity.y(9), entity);
       assert.equal(entity.y(), 9);
       assert.equal(entity.x(), 0); // default for when only one of x/y is set.
     });
+    it('can read from an input object', function () {
+      const entity = new PositionEntity();
+      entity.fromObject({
+        name: 'stone-wall',
+        position: {x: 5, y: 42}
+      });
+      console.log("entity: ", entity);
+      assert.equal(entity.name(), 'stone-wall');
+      assert.equal(entity.position().x, 5);
+      assert.equal(entity.position().y, 42);
+      assert.equal(entity.x(), 5);
+      assert.equal(entity.y(), 42);
+    });
+    it('can output to an object', function () {
+      const entity = new PositionEntity().name('stone-wall')
+              .x(4)
+              .y(7)
+              ;
+      const obj = entity.toObject();
+      console.log("obj: ", obj);
+      assert.equal(obj.name, 'stone-wall');
+      assert.equal(obj.position.x, 4);
+      assert.equal(obj.position.y, 7);
+    });
   });
+
 });
 
 describe('entity mixins', function () {
