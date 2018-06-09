@@ -66,7 +66,6 @@ describe('Entity Features', function () {
         name: 'stone-wall',
         position: {x: 5, y: 42}
       });
-      console.log("entity: ", entity);
       assert.equal(entity.name(), 'stone-wall');
       assert.equal(entity.position().x, 5);
       assert.equal(entity.position().y, 42);
@@ -79,13 +78,37 @@ describe('Entity Features', function () {
               .y(7)
               ;
       const obj = entity.toObject();
-      console.log("obj: ", obj);
       assert.equal(obj.name, 'stone-wall');
       assert.equal(obj.position.x, 4);
       assert.equal(obj.position.y, 7);
     });
   });
 
+  describe('entities with directions', function () {
+    // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
+    const DirectionEntity = mixwith.mix(entity.BaseEntity).with(entity.Direction);
+
+    it('can get/set the direction property', function () {
+      const entity = new DirectionEntity();
+      assert.equal(entity.direction(6), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.direction(), 6);
+    });
+    it('can read from an input object', function () {
+      const entity = new DirectionEntity();
+      entity.fromObject({
+        direction: 4
+      });
+      assert.equal(entity.direction(), 4);
+    });
+    it('can output to an object', function () {
+      const entity = new DirectionEntity()
+              .name('stone-wall')
+              .direction(2)
+              ;
+      const obj = entity.toObject();
+      assert.equal(obj.direction, 2);
+    });
+  });
 });
 
 describe('entity mixins', function () {
