@@ -40,8 +40,7 @@ class BaseEntity {
    * @return {BaseEntity}
    */
   _property(name, value) {
-    if (typeof value === 'undefined')
-      return this[name];
+    if (typeof value === 'undefined') return this[name];
     this[name] = value;
     return this;
   }
@@ -77,8 +76,7 @@ const Direction = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.direction)
-        this.direction(obj.direction);
+      if (obj.direction) this.direction(obj.direction);
     }
 
     toObject() {
@@ -105,19 +103,15 @@ const Position = (superclass) => class extends superclass {
     }
 
     x(x) {
-      if (typeof this._position === 'undefined')
-        this.position(new Victor(0, 0));
-      if (!x)
-        return this._position.x;
+      if (typeof this._position === 'undefined') this.position(new Victor(0, 0));
+      if (!x) return this._position.x;
       this._position.x = x;
       return this;
     }
 
     y(y) {
-      if (typeof this._position === 'undefined')
-        this.position(new Victor(0, 0));
-      if (!y)
-        return this._position.y;
+      if (typeof this._position === 'undefined') this.position(new Victor(0, 0));
+      if (!y) return this._position.y;
       this._position.y = y;
       return this;
     }
@@ -144,12 +138,9 @@ const Position = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.position)
-        this.position(new Victor(obj.position.x, obj.position.y));
-      if (obj.width)
-        this.width(obj.width);
-      if (obj.height)
-        this.height(obj.height);
+      if (obj.position) this.position(new Victor(obj.position.x, obj.position.y));
+      if (obj.width) this.width(obj.width);
+      if (obj.height) this.height(obj.height);
     }
 
     toObject() {
@@ -186,8 +177,7 @@ const Filter = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.filters)
-        this.filters(obj.filters);
+      if (obj.filters) this.filters(obj.filters);
     }
 
     toObject() {
@@ -218,15 +208,13 @@ const Inventory = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.maxInventory)
-        this.maxInventory(obj.maxInventory);
-      if (obj.bar)
-        this.bar(obj.bar);
+      if (obj.maxInventory) this.maxInventory(obj.maxInventory);
+      if (obj.bar) this.bar(obj.bar);
     }
 
     toObject() {
       const mine = {
-        bar: this.bar
+        bar: this.bar()
       };
 
       const sup = (super.toObject) ? super.toObject() : {};
@@ -267,10 +255,8 @@ const Modules = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.modules)
-        this.maxModules(obj.modules);
-      if (obj.items)
-        this.modules(obj.items);
+      if (obj.modules) this.maxModules(obj.modules);
+      if (obj.items) this.modules(obj.items);
     }
 
     toObject() {
@@ -293,8 +279,7 @@ const Recipe = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.recipe)
-        this.recipe(obj.recipe);
+      if (obj.recipe) this.recipe(obj.recipe);
     }
 
     toObject() {
