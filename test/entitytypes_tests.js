@@ -37,6 +37,32 @@ describe('Entity Features', function () {
       assert.equal(obj.name, 'beacon');
     });
   });
+  describe('entities with positions', function () {
+    // using the mixin structure to ensure that it is tested through the pattern that is used in reality.
+    // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
+    const BaseEntity = mixwith.mix(entity.BaseEntity).with(entity.Position);
+
+    it('can get/set the position property', function () {
+      const entity = new BaseEntity().name('stone-wall');
+      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.position(new Victor(5, -2)), entity);
+      assert.deepStrictEqual(entity.position(), new Victor(5,-2));
+    });
+    it('can get/set the x property', function () {
+      const entity = new BaseEntity().name('stone-wall');
+      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.x(4), entity);
+      assert.equal(entity.x(), 4);
+      assert.equal(entity.y(), 0); // default for when only one of x/y is set.
+    });
+    it('can get/set the y property', function () {
+      const entity = new BaseEntity().name('stone-wall');
+      assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.y(9), entity);
+      assert.equal(entity.y(), 9);
+      assert.equal(entity.x(), 0); // default for when only one of x/y is set.
+    });
+  });
 });
 
 describe('entity mixins', function () {

@@ -106,19 +106,19 @@ const Position = (superclass) => class extends superclass {
 
     x(x) {
       if (typeof this._position === 'undefined')
-        this.position(new Victor({x: 0, y: 0}));
+        this.position(new Victor(0, 0));
       if (!x)
-        return this.position.x;
-      this.position.x = x;
+        return this._position.x;
+      this._position.x = x;
       return this;
     }
 
     y(y) {
       if (typeof this._position === 'undefined')
-        this.position(new Victor({x: 0, y: 0}));
+        this.position(new Victor(0, 0));
       if (!y)
-        return this.position.y;
-      this.position.y = y;
+        return this._position.y;
+      this._position.y = y;
       return this;
     }
 
