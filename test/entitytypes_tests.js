@@ -223,8 +223,46 @@ describe('Entity Features', function () {
     });
   });
 
+  describe('entities with circuit control', function () {
+    const ControlEntity = mixwith.mix(entity.BaseEntity).with(entity.CircuitControl);
 
-  // TODO: Circuit Control / enabled+disabled on circuits
+    it('can get/set the first signal property', function () {
+      const entity = new ControlEntity();
+      assert.equal(entity.circuitControlFirstSignal('stone', 'item'), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.circuitControlFirstSignal().name, 'stone');
+      assert.equal(entity.circuitControlFirstSignal().type, 'item');
+    });
+
+    describe('signal <comparator> constant', function () {
+      it('can read from an input object', function () {
+        const entity = new ControlEntity();
+        entity.fromObject({
+          circuit_condition: {
+            first_signal: { type: 'item', name: 'electronic-circuit' },
+            constant: 40,
+            comparator: '>'
+          }
+        });
+        assert.equal(entity.circuitControlFirstSignal().type, 'item');
+        assert.equal(entity.circuitControlFirstSignal().name, 'electronic-circuit');
+        assert.equal(entity.circuitControlConstant(), 40);
+        assert.equal(entity.circuitControlComparator(), '>');
+      });
+      it('can output to an object', function () {
+        const entity = new ControlEntity()
+                .circuitControlFirstSignal('wood', 'item')
+                .circuitControlConstant(42)
+                .circuitControlComparator('>')
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.circuit_condition.first_signal.name, 'wood');
+        assert.equal(obj.circuit_condition.first_signal.type, 'item');
+        assert.equal(obj.circuit_condition.constant, 42);
+        assert.equal(obj.circuit_condition.comparator, '>');
+      });
+    });
+  });
+
   // TODO: Connections - will require a double-pass of the data.
 });
 

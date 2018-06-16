@@ -5,8 +5,6 @@ const Victor = require('victor');
 const mixwith = require('mixwith');
 
 
-// XXX current major flaw: the re-assignment of obj.x from a function to a property breaks most things! Either prefix the properties with _, or use different names for the functions.
-
 /*
  * Base Entity, should contain the bare minimum that is in every entity.
  *
@@ -224,10 +222,19 @@ const Inventory = (superclass) => class extends superclass {
 
 const CircuitControl = (superclass) => class extends superclass {
 
+    circuitControlFirstSignal(name, type) {
+      if (typeof name !== 'undefined' && typeof type !== 'undefined') {
+        var obj = {name: name, type: type};
+      }
+      return this._property('_circuitControlFirstSignal', obj);
+    }
+
     toObject() {
       const mine = {
         control_behavior: {
-          circuit_condition: {/* more here */},
+          circuit_condition: {
+            first_signal: circuitControlFirstSignal()
+          },
           circuit_enable_disable: true
         }
       };
@@ -298,6 +305,7 @@ module.exports = {
   Direction: Direction,
   Position: Position,
   Inventory: Inventory,
+  CircuitControl: CircuitControl,
   Modules: Modules,
   Recipe: Recipe
 };
