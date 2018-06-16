@@ -250,7 +250,7 @@ const Modules = (superclass) => class extends superclass {
     }
 
     modules(modules) {
-      return this._property('_items', modules);
+      return this._property('_modules', modules);
     }
 
     fromObject(obj) {
@@ -261,7 +261,7 @@ const Modules = (superclass) => class extends superclass {
 
     toObject() {
       const mine = {
-        items: this.items
+        items: this.modules()
       };
 
       const sup = (super.toObject) ? super.toObject() : {};
