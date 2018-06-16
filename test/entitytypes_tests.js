@@ -21,19 +21,29 @@ describe('Entity Features', function () {
     const BaseEntity = mixwith.mix(entity.BaseEntity).with();
 
     it('can get/set the name property', function () {
-      const entity = new BaseEntity().name('stone-wall');
-      assert.equal(entity.name(), 'stone-wall');
+      const entity = new BaseEntity();
       assert.equal(entity.name('stone-wall'), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.name(), 'stone-wall');
+    });
+    it('can get/set the entity number property', function () {
+      const entity = new BaseEntity();
+      assert.equal(entity.number(1), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.number(), 1);
     });
     it('can read from an input object', function () {
       const entity = new BaseEntity();
-      entity.fromObject({name: 'concrete'});
+      entity.fromObject({
+        name: 'concrete',
+        entity_number: 1
+      });
       assert.equal(entity.name(), 'concrete');
+      assert.equal(entity.number(), 1);
     });
     it('can output to an object', function () {
-      const entity = new BaseEntity().name('beacon');
+      const entity = new BaseEntity().name('beacon').number(4);
       const obj = entity.toObject();
       assert.equal(obj.name, 'beacon');
+      assert.equal(obj.entity_number, 4);
     });
   });
   describe('entities with positions', function () {
@@ -312,6 +322,11 @@ describe('Entity Features', function () {
   });
 
   // TODO: Connections - will require a double-pass of the data.
+  describe('connections', function () {
+    describe('entities have IDs', function () {
+      
+    });
+  });
 });
 
 describe('entity mixins', function () {

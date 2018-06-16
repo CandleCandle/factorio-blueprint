@@ -19,14 +19,20 @@ class BaseEntity {
     return this._property('_name', name);
   }
 
+  number(number) {
+    return this._property('_number', number);
+  }
+
   toObject() {
     return {
-      name: this._name
+      name: this.name(),
+      entity_number: this.number()
     };
   }
 
   fromObject(entityObject) {
-    this._name = entityObject.name;
+    this.name(entityObject.name);
+    this.number(entityObject.entity_number);
   }
 
   /**
