@@ -96,6 +96,13 @@ const Direction = (superclass) => class extends superclass {
 /**
  * Placeable entities must have a position; and by that virtue, are highly likely
  * to also have a width and height.
+ *
+ * Coordinate systems:
+ * This library has every entity placed in the grid with it's top-left corner
+ * being the 'location' and the width and height extending down and right.
+ *
+ * Factorio uses the centre of the entity as the placement location; except,
+ * it seems, 1x1 entities.
  */
 const Position = (superclass) => class extends superclass {
     // position: Victor
