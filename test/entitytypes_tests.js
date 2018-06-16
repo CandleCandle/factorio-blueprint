@@ -321,10 +321,68 @@ describe('Entity Features', function () {
     });
   });
 
-  // TODO: Connections - will require a double-pass of the data.
   describe('connections', function () {
-    describe('entities have IDs', function () {
-      
+    const ConnectionsEntity = mixwith.mix(entity.BaseEntity).with(entity.Connections);
+
+    // Connections require a double-pass of the data;
+    // first call fromObject to get the entity objects; then for each entity
+    // call updateConnections passing in an object of entity_number => entity
+    // mappings.
+    it('can read from an input object', function () {
+      const entity1 = new ConnectionsEntity();
+      entity1.fromObject({
+        name: 'medium-electric-pole',
+        entity_number: 1,
+        connections: {
+          '1': {
+            red: [
+              { entity_id: 2 }
+            ]
+          }
+        }
+      });
+      const entity2 = new ConnectionsEntity();
+      entity2.fromObject({
+        name: 'medium-electric-pole',
+        entity_number: 2,
+        connections: {
+          '1': {
+            red: [
+              { entity_id: 1 }
+            ]
+          }
+        }
+      });
+      const entityNumberMap = {
+        1: entity1,
+        2: entity2
+      };
+      entity1.updateConnections(entityNumberMap);
+      entity2.updateConnections(entityNumberMap);
+
+      assert.equal(entity1.name(), 'medium-electric-pole');
+      assert.equal(entity1.number(), 1);
+      assert.equal(entity2.name(), 'medium-electric-pole');
+      assert.equal(entity2.number(), 2);
+
+      assert.equal(entity1.connections().get('1', 'red')[0].otherEntity, entity2);
+      assert.equal(entity2.connections().get('1', 'red')[0].otherEntity, entity1);
+    });
+
+    it('can connect two entities', function () {
+      const entity1 = new ConnectionsEntity()
+              .name('medium-electric-pole');
+      const entity2 = new ConnectionsEntity()
+              .name('power-switch');
+      const mySide = '1';
+      const theirSide = '1';
+      entity1.connectTo(entity2, mySide, theirSide, 'green');
+
+      assert.equal(entity1.connections().get('1', 'green')[0].otherEntity, entity2);
+      assert.equal(entity2.connections().get('1', 'green')[0].otherEntity, entity1);
+    });
+
+    it('can read copper connections from an input object', function () {
     });
   });
 });
