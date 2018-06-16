@@ -171,7 +171,7 @@ const Filter = (superclass) => class extends superclass {
 
     addFilter(type) {
       // find the next available slot for type.
-      this._filters[this.filters.size] = type;
+      this._filters[this._filters.size] = type;
       return this;
     }
 
@@ -182,7 +182,7 @@ const Filter = (superclass) => class extends superclass {
 
     toObject() {
       const mine = {
-        filters: this._filters
+        filters: this.filters()
       };
 
       const sup = (super.toObject) ? super.toObject() : {};

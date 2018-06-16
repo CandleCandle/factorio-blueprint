@@ -184,7 +184,7 @@ describe('Entity Features', function () {
     it('can read from an input object', function () {
       const entity = new RecipeEntity();
       entity.fromObject({
-        recipe: 'beacon',
+        recipe: 'beacon'
       });
       assert.equal(entity.recipe(), 'beacon');
     });
@@ -196,6 +196,36 @@ describe('Entity Features', function () {
       assert.equal(obj.recipe, 'speed-module');
     });
   });
+
+  describe('entities with filters', function () {
+    const FilterEntity = mixwith.mix(entity.BaseEntity).with(entity.Filter);
+
+    it('can get/set the filters property', function () {
+      const entity = new FilterEntity();
+      assert.equal(entity.filters({0: 'stone'}), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.filters()[0], 'stone');
+    });
+    it('can read from an input object', function () {
+      const entity = new FilterEntity();
+      entity.fromObject({
+        filters: {
+          '1': 'iron-plate'
+        }
+      });
+      assert.equal(entity.filters()[1], 'iron-plate');
+    });
+    it('can output to an object', function () {
+      const entity = new FilterEntity()
+              .filters({'4': 'steel-plate'})
+              ;
+      const obj = entity.toObject();
+      assert.equal(obj.filters['4'], 'steel-plate');
+    });
+  });
+
+
+  // TODO: Circuit Control / enabled+disabled on circuits
+  // TODO: Connections - will require a double-pass of the data.
 });
 
 describe('entity mixins', function () {
