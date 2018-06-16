@@ -229,6 +229,13 @@ const CircuitControl = (superclass) => class extends superclass {
       return this._property('_circuitControlFirstSignal', obj);
     }
 
+    circuitControlSecondSignal(name, type) {
+      if (typeof name !== 'undefined' && typeof type !== 'undefined') {
+        var obj = {name: name, type: type};
+      }
+      return this._property('_circuitControlSecondSignal', obj);
+    }
+
     circuitControlConstant(value) {
       return this._property('_circuitControlConstant', value);
     }
@@ -240,9 +247,11 @@ const CircuitControl = (superclass) => class extends superclass {
     fromObject(obj) {
       super.fromObject(obj);
       if (obj.circuit_condition) {
-        if (obj.circuit_condition.first_signal) this.circuitControlFirstSignal(obj.circuit_condition.first_signal.name, obj.circuit_condition.first_signal.type);
-        if (obj.circuit_condition.constant) this.circuitControlConstant(obj.circuit_condition.constant);
-        if (obj.circuit_condition.comparator) this.circuitControlComparator(obj.circuit_condition.comparator);
+        const cc = obj.circuit_condition;
+        if (cc.first_signal) this.circuitControlFirstSignal(cc.first_signal.name, cc.first_signal.type);
+        if (cc.second_signal) this.circuitControlSecondSignal(cc.second_signal.name, cc.second_signal.type);
+        if (cc.constant) this.circuitControlConstant(cc.constant);
+        if (cc.comparator) this.circuitControlComparator(cc.comparator);
       }
       if (obj.bar) this.bar(obj.bar);
     }
@@ -254,7 +263,9 @@ const CircuitControl = (superclass) => class extends superclass {
           circuit_condition: {
             first_signal: this.circuitControlFirstSignal(),
             comparator: this.circuitControlComparator(),
-            constant: this.circuitControlConstant()
+
+            constant: this.circuitControlConstant(),
+            second_signal: this.circuitControlSecondSignal()
           },
           circuit_enable_disable: true
         }
