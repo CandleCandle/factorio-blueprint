@@ -229,11 +229,32 @@ const CircuitControl = (superclass) => class extends superclass {
       return this._property('_circuitControlFirstSignal', obj);
     }
 
+    circuitControlConstant(value) {
+      return this._property('_circuitControlConstant', value);
+    }
+
+    circuitControlComparator(value) {
+      return this._property('_circuitControlComparator', value);
+    }
+
+    fromObject(obj) {
+      super.fromObject(obj);
+      if (obj.circuit_condition) {
+        if (obj.circuit_condition.first_signal) this.circuitControlFirstSignal(obj.circuit_condition.first_signal.name, obj.circuit_condition.first_signal.type);
+        if (obj.circuit_condition.constant) this.circuitControlConstant(obj.circuit_condition.constant);
+        if (obj.circuit_condition.comparator) this.circuitControlComparator(obj.circuit_condition.comparator);
+      }
+      if (obj.bar) this.bar(obj.bar);
+    }
+
+
     toObject() {
       const mine = {
         control_behavior: {
           circuit_condition: {
-            first_signal: circuitControlFirstSignal()
+            first_signal: this.circuitControlFirstSignal(),
+            comparator: this.circuitControlComparator(),
+            constant: this.circuitControlConstant()
           },
           circuit_enable_disable: true
         }

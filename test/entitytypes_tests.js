@@ -232,6 +232,16 @@ describe('Entity Features', function () {
       assert.equal(entity.circuitControlFirstSignal().name, 'stone');
       assert.equal(entity.circuitControlFirstSignal().type, 'item');
     });
+    it('can get/set the constant property', function () {
+      const entity = new ControlEntity();
+      assert.equal(entity.circuitControlConstant(34), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.circuitControlConstant(), 34);
+    });
+    it('can get/set the comparator property', function () {
+      const entity = new ControlEntity();
+      assert.equal(entity.circuitControlComparator('='), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.circuitControlComparator(), '=');
+    });
 
     describe('signal <comparator> constant', function () {
       it('can read from an input object', function () {
@@ -255,10 +265,10 @@ describe('Entity Features', function () {
                 .circuitControlComparator('>')
                 ;
         const obj = entity.toObject();
-        assert.equal(obj.circuit_condition.first_signal.name, 'wood');
-        assert.equal(obj.circuit_condition.first_signal.type, 'item');
-        assert.equal(obj.circuit_condition.constant, 42);
-        assert.equal(obj.circuit_condition.comparator, '>');
+        assert.equal(obj.control_behavior.circuit_condition.first_signal.name, 'wood');
+        assert.equal(obj.control_behavior.circuit_condition.first_signal.type, 'item');
+        assert.equal(obj.control_behavior.circuit_condition.constant, 42);
+        assert.equal(obj.control_behavior.circuit_condition.comparator, '>');
       });
     });
   });
