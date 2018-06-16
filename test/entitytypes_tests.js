@@ -169,7 +169,31 @@ describe('Entity Features', function () {
               ;
       const obj = entity.toObject();
       assert.equal(obj.items['speed-module'], 1);
-      assert.equal(typeof obj.maxModules, 'undefined'); // maxInventory comes from our entityData and therefore should not be exported
+      assert.equal(typeof obj.maxModules, 'undefined'); // maxModules comes from our entityData and therefore should not be exported
+    });
+  });
+
+  describe('entities with recipes', function () {
+    const RecipeEntity = mixwith.mix(entity.BaseEntity).with(entity.Recipe);
+
+    it('can get/set the recipe property', function () {
+      const entity = new RecipeEntity();
+      assert.equal(entity.recipe('rocket-control-unit'), entity); // setter returns the entity for function chaining.
+      assert.equal(entity.recipe(), 'rocket-control-unit');
+    });
+    it('can read from an input object', function () {
+      const entity = new RecipeEntity();
+      entity.fromObject({
+        recipe: 'beacon',
+      });
+      assert.equal(entity.recipe(), 'beacon');
+    });
+    it('can output to an object', function () {
+      const entity = new RecipeEntity()
+              .recipe('speed-module')
+              ;
+      const obj = entity.toObject();
+      assert.equal(obj.recipe, 'speed-module');
     });
   });
 });
@@ -187,7 +211,7 @@ describe('entity mixins', function () {
 //        console.log("filter inserter class: ", FilterInserter);
 
       const obj = fi.toObject();
-      console.log("obj:", obj);
+//      console.log("obj:", obj);
 
       assert.equal(obj.name, 'filter-inserter');
       assert.equal(obj.position.x, 4);

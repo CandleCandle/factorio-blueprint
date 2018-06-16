@@ -284,7 +284,7 @@ const Recipe = (superclass) => class extends superclass {
 
     toObject() {
       const mine = {
-        recipe: this.recipe
+        recipe: this.recipe()
       };
 
       const sup = (super.toObject) ? super.toObject() : {};
