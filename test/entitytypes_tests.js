@@ -92,7 +92,72 @@ describe('Entity Features', function () {
       assert.equal(obj.position.x, 4);
       assert.equal(obj.position.y, 7);
     });
+
+    describe('tileDataAction', function () {
+      // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
+      const PositionDirectionEntity = mixwith.mix(entity.BaseEntity).with(entity.Position, entity.Direction);
+      it('performs an action for all tiles for a 1x1 square entity', function () {
+        const entity = new PositionEntity();
+        entity.fromObject({
+          name: 'stone-wall',
+          width: 1,
+          height: 1,
+          position: {x: 5, y: 42}
+        });
+        const visited = {};
+        entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+        assert.equal(visited["5,42"], 1);
+      });
+      it('performs an action for all tiles for a 2x2 square entity', function () {
+        const entity = new PositionEntity();
+        entity.fromObject({
+          name: 'stone-wall',
+          width: 2,
+          height: 2,
+          position: {x: 1, y: 9}
+        });
+        const visited = {};
+        entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+        assert.equal(visited["1,9"], 1);
+        assert.equal(visited["1,10"], 1);
+        assert.equal(visited["2,9"], 1);
+        assert.equal(visited["2,10"], 1);
+      });
+      describe('tileDataAction for non-square, rotated entities', function () {
+        for (let rotation = 0; rotation <= 6; rotation += 2) {
+          const entity = new PositionEntity();
+          entity.fromObject({
+            name: 'heat_exchanger',
+            width: 3,
+            height: 2,
+            direction: rotation,
+            position: {x: 0, y: 0}
+          });
+          const visited = {};
+          entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+
+          it('performs an action for all tiles for a rotated 3x2 square entity (rotation ' + rotation + ')', function () {
+            if (rotation === 0 || rotation === 4) {
+              assert.equal(visited["0,0"], 1);
+              assert.equal(visited["0,1"], 1);
+              assert.equal(visited["1,0"], 1);
+              assert.equal(visited["1,1"], 1);
+              assert.equal(visited["2,0"], 1);
+              assert.equal(visited["2,1"], 1);
+            } else {
+              assert.equal(visited["0,0"], 1);
+              assert.equal(visited["0,1"], 1);
+              assert.equal(visited["0,2"], 1);
+              assert.equal(visited["1,0"], 1);
+              assert.equal(visited["1,1"], 1);
+              assert.equal(visited["1,2"], 1);
+            }
+          });
+        }
+      });
+    });
   });
+
 
   describe('entities with directions', function () {
     // define the class outside the tests to ensure that it's the same class/prototype that is being tested.

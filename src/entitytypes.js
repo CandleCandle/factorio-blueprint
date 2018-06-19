@@ -152,7 +152,7 @@ const Position = (superclass) => class extends superclass {
       if (obj.position) this.position(new Victor(obj.position.x, obj.position.y));
       if (obj.width) this.width(obj.width);
       if (obj.height) this.height(obj.height);
-    }
+      }
 
     toObject() {
       const mine = {
