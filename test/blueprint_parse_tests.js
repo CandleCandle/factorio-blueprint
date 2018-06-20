@@ -89,7 +89,7 @@ describe('Blueprint Parsing', function () {
       //assert.equal(assembler.modules, {'speed_module_3': 1, 'productivity_module_3': 2, 'effectivity_module_3': 1}); // Should work out why this assertion does not pass.
     });
   });
-  
+
   describe('filter inserters', function () {
     it('stack filter inserters have only one filter', function () {
       const input = '0eNqFj9EKgzAMRf/lPlfQOZz0V4YMddkI01TaOibSf1+rbOxtLyE35J7crOiGmSbL4qFXcG/EQZ9XOL5LO6SZXyaCBnsaoSDtmJTzbf/Ibjx4shmLIxsbBAWWK72gi9AokHj2TDtwE8tF5rGLm7r4g1KYjItuIylDJOYKS6zxxL66Uz/nvjS2RjJjCaFJEbbU+udJhWf0btiqPh2Kuqzy8hjCG3KaWUM=';
@@ -318,6 +318,25 @@ describe('Blueprint Parsing', function () {
 
       assert.equal(miner_1.name, "electric_mining_drill");
       // TODO circuit_read_resources & circuit_resource_read_mode
+    });
+    it('can read all directions & positions', function () {
+//      const input = '0eNrNl1tugzAQRfcy31BhQ0iKupOqQjyc1hLYyJg0KGLv9YO0qUKruiKKvyKG8fVwdD0Tn6BsBtIJyiRkJ6AVZz1kzyfo6SsrGh2TY0cgAypJCwGwotVPNaloTURY8bakrJBcwBQAZTU5QoamlwAIk1RSYtXMw5izoS2JUAm/6QTQ8V4t5UzvfjTZI2Rh/LBRW6gCpeBNXpK34kBVusqZRXL1rjYLex3dU9HL/Oo7DlTIQUU+S7AZYaQ/oCda4++LMJiS2q4QpvYMnkAHulEVMzCZ7wVvc8q6QeGVYiDTNAVXOLATjsjiSDzEgVbBETvh0L6wRLDavKaCVPZtekM66f3MkrjRwWc6sed04lXobJzo4Nk4Hh6ldXCkbmZJzmZBnptlnUaz/ZKVnJHwvWiaBSp2/kRLCjsXBUV1QeLxTxLRzzWgyEFhuQbkNpDPHTf67hJ8Q5fg+7kEYcd5ZNgg01Mu6CQ3pJPcr8Mgx2ltWy72ns46wxq5TWs0Hyzs+cFayTqOw3qGgzyHs5JzHEe3HTGx9+fqPz1Z3SbN7TO7uKwG0BQlUTuCxUJEr2IH9WP/sey2GO3iNIqTafoAsb0nAg==';
+      const input = '0eNqV0uFqgzAQB/B3+X+OULWzklcZY0R3HYF4ShLXivjuO+0og7qyfAp35H7hcjejcSMN3nKEnmHbngP064xgP9m4NRengaBhI3VQYNOtETlqo7dtdh49m5awKFj+oCt0vrwpEEcbLd2sLZjeeewa8nLhb0Vh6IMU9ry+LFhWKkxyHJdFPUBFAlQ8ccq7E2LPlF2Mc4/C4SYUe8LxX0KWPyFe0n8l33OqlGZ2hVNSM7tEnTwZYWRttiXTv3ZSwZmGZA/xUx8k9UU+bPVVfSryuqwOpcz1G3+87Q8='
+//      const input = '0eNqNkdsKwjAMht8l11V2dvRVRGTTIIEuHWs9jNF3t91geJjMq5D075fkzwC1umLbEVuQA9BJswG5H8DQhSsVarZvESSQxQYEcNWErNaksAMngPiMD5CxOwhAtmQJJ8KY9Ee+NrVXyvjzr4BWGy/XHLp4xMZLeh+Sbe6c+AIk64B0m4+IyM91pg5P02OxQEtXafEyLFmAZTPMWM24uVdK/dwvWlou/9edYM7bPFkwfjyOfLmlAFXVqGae8ZWbD5Mf5S6Jy7SI0sy5J2Yjpzs='
+      console.log("HERE");
+      console.log("blueprint", util.decode[0](input).blueprint.entities.map(e => {
+        return {
+          n: e.name,
+          p: e.position,
+          d: e.direction,
+          f: (e.control_behavior ? e.control_behavior.decider_conditions.first_signal : "NONE"),
+          s: (e.control_behavior ? e.control_behavior.decider_conditions.second_signal : "NONE")
+        };
+      }));
+      const bp = new Blueprint().load(input);
+      const e1 = bp.findEntity(new Victor(-2, -2));
+
+      assert.equal(e1.name, "arithemetic-combinator");
     });
   });
 
