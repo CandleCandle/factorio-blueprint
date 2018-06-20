@@ -4,6 +4,20 @@
 const Victor = require('victor');
 const mixwith = require('mixwith');
 
+/* Current problem:
+ * * tileDataAction *
+ * tileDataAction needs to know about: position, size and direction.
+ * Option 1: use if (typeof this.{function} === 'function') to detect that the resulting class is mixed with the appropriate other mixin.
+ * Option 2: have all of position+size+direction in the same mixin
+ * Option 3: Keep them separate and define another mixin that depends on the others being there.
+ * 
+ * dependency tree:
+ * size depends-on direction
+ * position depends-on size
+ * tileDataAction depends-on position
+ * tileDataAction depends-on size
+ */
+
 
 /*
  * Base Entity, should contain the bare minimum that is in every entity.
@@ -140,19 +154,44 @@ const Position = (superclass) => class extends superclass {
      * @param {function} fn 2-parameter function; parameters are (x, y)
      */
     tileDataAction(fn) {
-      for (let y = this.y(); y < (this.y() + this.height()); ++y) {
-        for (let x = this.x(); x < (this.x() + this.width()); ++x) {
+      const size = this.effectiveSize();
+      for (let y = this.y(); y < (this.y() + size.y); ++y) {
+        for (let x = this.x(); x < (this.x() + size.x); ++x) {
           fn(x, y);
         }
       }
     }
 
+    effectiveSize() {
+      const size = new Victor(this.width(), this.height());
+      if (typeof this.direction === 'function') {
+        // if this type has a direction, and it's E or W then swap the x/y of the size.
+        if (this.direction() === 2 || this.direction() === 6) {
+          const t = size.x;
+          size.x = size.y;
+          size.y = t;
+        }
+      }
+      return size;
+    }
+
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.position) this.position(new Victor(obj.position.x, obj.position.y));
-      if (obj.width) this.width(obj.width);
-      if (obj.height) this.height(obj.height);
+      // Set the default width and height to 1.
+      if (obj.width) { this.width(obj.width); } else { this.width(1); }
+      if (obj.height) { this.height(obj.height); } else { this.height(1); }
+
+      if (obj.position) {
+        // move the actual coordinates to the centre of the entity then move to the top-left corner.
+        const size = this.effectiveSize();
+        this.position(
+          new Victor(obj.position.x, obj.position.y)
+            .add(new Victor(0.5, 0.5))
+            .subtract(size.clone().divide(new Victor(2,2)))
+        );
       }
+
+    }
 
     toObject() {
       const mine = {

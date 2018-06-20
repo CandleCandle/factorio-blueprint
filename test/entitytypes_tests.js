@@ -95,7 +95,7 @@ describe('Entity Features', function () {
 
     describe('tileDataAction', function () {
       // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
-      const PositionDirectionEntity = mixwith.mix(entity.BaseEntity).with(entity.Position, entity.Direction);
+      const PositionDirectionEntity = mixwith.mix(entity.BaseEntity).with(entity.Direction, entity.Position);
       it('performs an action for all tiles for a 1x1 square entity', function () {
         const entity = new PositionEntity();
         entity.fromObject({
@@ -114,29 +114,34 @@ describe('Entity Features', function () {
           name: 'stone-wall',
           width: 2,
           height: 2,
-          position: {x: 1, y: 9}
+          position: {x: 0.5, y: 0.5}
         });
         const visited = {};
         entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
-        assert.equal(visited["1,9"], 1);
-        assert.equal(visited["1,10"], 1);
-        assert.equal(visited["2,9"], 1);
-        assert.equal(visited["2,10"], 1);
+        assert.equal(visited["0,0"], 1);
+        assert.equal(visited["1,0"], 1);
+        assert.equal(visited["0,1"], 1);
+        assert.equal(visited["1,1"], 1);
       });
       describe('tileDataAction for non-square, rotated entities', function () {
+        const coords = {
+          0: {x: 1, y: 0.5},
+          4: {x: 1, y: 0.5},
+          2: {x: 0.5, y: 1},
+          6: {x: 0.5, y: 1}
+        };
         for (let rotation = 0; rotation <= 6; rotation += 2) {
-          const entity = new PositionEntity();
-          entity.fromObject({
-            name: 'heat_exchanger',
-            width: 3,
-            height: 2,
-            direction: rotation,
-            position: {x: 0, y: 0}
-          });
-          const visited = {};
-          entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
-
           it('performs an action for all tiles for a rotated 3x2 square entity (rotation ' + rotation + ')', function () {
+            const entity = new PositionDirectionEntity();
+            entity.fromObject({
+              name: 'heat_exchanger',
+              width: 3,
+              height: 2,
+              direction: rotation,
+              position: coords[rotation]
+            });
+            const visited = {};
+            entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
             if (rotation === 0 || rotation === 4) {
               assert.equal(visited["0,0"], 1);
               assert.equal(visited["0,1"], 1);
