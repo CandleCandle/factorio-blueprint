@@ -632,8 +632,8 @@ module.exports = { // ADD MORE (vanilla) AS YOU PLEASE (or modded if it's just f
 
   boiler: {
     type: item,
-    width: 1,
-    height: 1
+    width: 3,
+    height: 2
   },
   steam_engine: {
     type: item,

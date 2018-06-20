@@ -35,14 +35,20 @@ module.exports = function(entityData) {
       }, {}) : {};
 
 
-      this.size = myData ? new Victor(myData.width, myData.height) : // Size in Victor form
-        (entityData[this.name] ? new Victor(entityData[this.name].width, entityData[this.name].height) : new Victor(1, 1));
+      this.size =
+        myData
+        ? new Victor(myData.width, myData.height)  // Size in Victor form
+        : (
+            entityData[this.name]
+            ? new Victor(entityData[this.name].width, entityData[this.name].height)
+            : new Victor(1, 1)
+        );
       this.HAS_DIRECTION_TYPE = myData.directionType;
       this.CAN_HAVE_RECIPE = myData.recipe;
       this.CAN_HAVE_MODULES = myData.modules;
       this.INVENTORY_SIZE = myData.inventorySize || null;
 
-      this.setDirection(data.direction || 0);
+      this.setDirection(data.direction || 0); // can exchange the w/h when the entity has been rotated.
 
       this.parseFilters(data.filters);
       this.parseRequestFilters(data.request_filters);

@@ -319,28 +319,57 @@ describe('Blueprint Parsing', function () {
       assert.equal(miner_1.name, "electric_mining_drill");
       // TODO circuit_read_resources & circuit_resource_read_mode
     });
-    it('can read all directions & positions', function () {
-//      const input = '0eNrNl1tugzAQRfcy31BhQ0iKupOqQjyc1hLYyJg0KGLv9YO0qUKruiKKvyKG8fVwdD0Tn6BsBtIJyiRkJ6AVZz1kzyfo6SsrGh2TY0cgAypJCwGwotVPNaloTURY8bakrJBcwBQAZTU5QoamlwAIk1RSYtXMw5izoS2JUAm/6QTQ8V4t5UzvfjTZI2Rh/LBRW6gCpeBNXpK34kBVusqZRXL1rjYLex3dU9HL/Oo7DlTIQUU+S7AZYaQ/oCda4++LMJiS2q4QpvYMnkAHulEVMzCZ7wVvc8q6QeGVYiDTNAVXOLATjsjiSDzEgVbBETvh0L6wRLDavKaCVPZtekM66f3MkrjRwWc6sed04lXobJzo4Nk4Hh6ldXCkbmZJzmZBnptlnUaz/ZKVnJHwvWiaBSp2/kRLCjsXBUV1QeLxTxLRzzWgyEFhuQbkNpDPHTf67hJ8Q5fg+7kEYcd5ZNgg01Mu6CQ3pJPcr8Mgx2ltWy72ns46wxq5TWs0Hyzs+cFayTqOw3qGgzyHs5JzHEe3HTGx9+fqPz1Z3SbN7TO7uKwG0BQlUTuCxUJEr2IH9WP/sey2GO3iNIqTafoAsb0nAg==';
-      const input = '0eNqV0uFqgzAQB/B3+X+OULWzklcZY0R3HYF4ShLXivjuO+0og7qyfAp35H7hcjejcSMN3nKEnmHbngP064xgP9m4NRengaBhI3VQYNOtETlqo7dtdh49m5awKFj+oCt0vrwpEEcbLd2sLZjeeewa8nLhb0Vh6IMU9ry+LFhWKkxyHJdFPUBFAlQ8ccq7E2LPlF2Mc4/C4SYUe8LxX0KWPyFe0n8l33OqlGZ2hVNSM7tEnTwZYWRttiXTv3ZSwZmGZA/xUx8k9UU+bPVVfSryuqwOpcz1G3+87Q8='
-//      const input = '0eNqNkdsKwjAMht8l11V2dvRVRGTTIIEuHWs9jNF3t91geJjMq5D075fkzwC1umLbEVuQA9BJswG5H8DQhSsVarZvESSQxQYEcNWErNaksAMngPiMD5CxOwhAtmQJJ8KY9Ee+NrVXyvjzr4BWGy/XHLp4xMZLeh+Sbe6c+AIk64B0m4+IyM91pg5P02OxQEtXafEyLFmAZTPMWM24uVdK/dwvWlou/9edYM7bPFkwfjyOfLmlAFXVqGae8ZWbD5Mf5S6Jy7SI0sy5J2Yjpzs='
-      console.log("HERE");
-      console.log("blueprint", util.decode[0](input).blueprint.entities.map(e => {
+  });
+  describe('directions & positions', function () {
+    const dump = input => {
+      console.log("decoded", util.decode[0](input).blueprint.entities.map(e => {
         return {
           n: e.name,
           p: e.position,
+//            p2: Victor.fromObject(e.position).add(new Victor(0.5, 0.5)),
           d: e.direction,
-          f: (e.control_behavior ? e.control_behavior.decider_conditions.first_signal : "NONE"),
-          s: (e.control_behavior ? e.control_behavior.decider_conditions.second_signal : "NONE")
+          f: (e.control_behavior ? e.control_behavior.decider_conditions.first_signal.name : "NONE"),
+          s: (e.control_behavior ? e.control_behavior.decider_conditions.second_signal.name : "NONE")
         };
       }));
+    };
+    it('understands 2x1 entities (combinators)', function () {
+      const input = '0eNrNl1tugzAQRfcy31BhQ0iKupOqQjyc1hLYyJg0KGLv9YO0qUKruiKKvyKG8fVwdD0Tn6BsBtIJyiRkJ6AVZz1kzyfo6SsrGh2TY0cgAypJCwGwotVPNaloTURY8bakrJBcwBQAZTU5QoamlwAIk1RSYtXMw5izoS2JUAm/6QTQ8V4t5UzvfjTZI2Rh/LBRW6gCpeBNXpK34kBVusqZRXL1rjYLex3dU9HL/Oo7DlTIQUU+S7AZYaQ/oCda4++LMJiS2q4QpvYMnkAHulEVMzCZ7wVvc8q6QeGVYiDTNAVXOLATjsjiSDzEgVbBETvh0L6wRLDavKaCVPZtekM66f3MkrjRwWc6sed04lXobJzo4Nk4Hh6ldXCkbmZJzmZBnptlnUaz/ZKVnJHwvWiaBSp2/kRLCjsXBUV1QeLxTxLRzzWgyEFhuQbkNpDPHTf67hJ8Q5fg+7kEYcd5ZNgg01Mu6CQ3pJPcr8Mgx2ltWy72ns46wxq5TWs0Hyzs+cFayTqOw3qGgzyHs5JzHEe3HTGx9+fqPz1Z3SbN7TO7uKwG0BQlUTuCxUJEr2IH9WP/sey2GO3iNIqTafoAsb0nAg==';
       const bp = new Blueprint().load(input);
+
       const e1 = bp.findEntity(new Victor(-2, -2));
-
-      assert.equal(e1.name, "arithemetic-combinator");
+      assert.equal(bp.entities.filter(e => e.position.x === 0 && e.position.y === 0)[0].name, "stone_wall");
+      assert.equal(bp.entities.filter(e => e.position.x === 2 && e.position.y === -3)[0].name, "decider_combinator"); // 0/3, direction 0
+      assert.equal(bp.entities.filter(e => e.position.x === -5 && e.position.y === -1)[0].name, "decider_combinator"); // 6/1, direction 6
+      assert.equal(bp.entities.filter(e => e.position.x === 3 && e.position.y === 0)[0].name, "decider_combinator"); // 2/1, direction 2
+      assert.equal(bp.entities.filter(e => e.position.x === -3 && e.position.y === 1)[0].name, "decider_combinator"); // 4/3, direction 4
     });
-  });
+    it('understands 2x3 entities (boilers)', function () {
+      const input = '0eNqNkdsKwjAMht8l11V2dvRVRGTTIIEuHWs9jNF3t91geJjMq5D075fkzwC1umLbEVuQA9BJswG5H8DQhSsVarZvESSQxQYEcNWErNaksAMngPiMD5CxOwhAtmQJJ8KY9Ee+NrVXyvjzr4BWGy/XHLp4xMZLeh+Sbe6c+AIk64B0m4+IyM91pg5P02OxQEtXafEyLFmAZTPMWM24uVdK/dwvWlou/9edYM7bPFkwfjyOfLmlAFXVqGae8ZWbD5Mf5S6Jy7SI0sy5J2Yjpzs=';
+      const bp = new Blueprint().load(input);
 
-  describe('connections', function () {
+      const e1 = bp.entities.filter(e => e.name === 'boiler' && e.direction === 0)[0];
+      assert.equal(e1.position.x, -2);
+      assert.equal(e1.position.y, -3);
+      const e2 = bp.entities.filter(e => e.direction === 2)[0];
+      assert.equal(e2.position.x, 1);
+      assert.equal(e2.position.y, -1);
+      const e3 = bp.entities.filter(e => e.direction === 4)[0];
+      assert.equal(e3.position.x, -2);
+      assert.equal(e3.position.y, 2);
+      const e4 = bp.entities.filter(e => e.direction === 6)[0];
+      assert.equal(e4.position.x, -4);
+      assert.equal(e4.position.y, -1);
+    });
+    it('understands 3x3 entities (furnaces)', function () {
+      const input = '0eNqV0uFqgzAQB/B3+X+OULWzklcZY0R3HYF4ShLXivjuO+0og7qyfAp35H7hcjejcSMN3nKEnmHbngP064xgP9m4NRengaBhI3VQYNOtETlqo7dtdh49m5awKFj+oCt0vrwpEEcbLd2sLZjeeewa8nLhb0Vh6IMU9ry+LFhWKkxyHJdFPUBFAlQ8ccq7E2LPlF2Mc4/C4SYUe8LxX0KWPyFe0n8l33OqlGZ2hVNSM7tEnTwZYWRttiXTv3ZSwZmGZA/xUx8k9UU+bPVVfSryuqwOpcz1G3+87Q8=';
+      const bp = new Blueprint().load(input);
+
+      assert.equal(bp.entities.filter(e => e.position.x === -4 && e.position.y === -5)[0].name, "electric_furnace");
+      assert.equal(bp.entities.filter(e => e.position.x === 1 && e.position.y === -5)[0].name, "electric_furnace");
+      assert.equal(bp.entities.filter(e => e.position.x === -4 && e.position.y === 0)[0].name, "electric_furnace");
+      assert.equal(bp.entities.filter(e => e.position.x === 1 && e.position.y === 0)[0].name, "electric_furnace");
+    });
   });
 });
 
