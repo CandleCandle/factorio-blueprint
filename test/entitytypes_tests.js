@@ -284,6 +284,7 @@ describe('Entity Features', function () {
     });
     it('can output to an object', function () {
       const entity = new RecipeEntity()
+              .name("foo")
               .recipe('speed-module')
               ;
       const obj = entity.toObject();
@@ -310,10 +311,11 @@ describe('Entity Features', function () {
     });
     it('can output to an object', function () {
       const entity = new FilterEntity()
+              .name("foo")
               .filters({'4': 'steel-plate'})
               ;
       const obj = entity.toObject();
-      assert.equal(obj.filters[0].index, '4');
+      assert.equal(obj.filters[0].index, 5);
       assert.equal(obj.filters[0].name, 'steel-plate');
     });
   });
@@ -348,6 +350,7 @@ describe('Entity Features', function () {
       it('can read from an input object', function () {
         const entity = new ControlEntity();
         entity.fromObject({
+          name: "something",
           circuit_condition: {
             first_signal: { type: 'item', name: 'electronic-circuit' },
             constant: 40,
@@ -361,6 +364,7 @@ describe('Entity Features', function () {
       });
       it('can output to an object', function () {
         const entity = new ControlEntity()
+                .name("something")
                 .circuitControlFirstSignal('wood', 'item')
                 .circuitControlConstant(42)
                 .circuitControlComparator('>')
@@ -391,6 +395,7 @@ describe('Entity Features', function () {
       });
       it('can output to an object', function () {
         const entity = new ControlEntity()
+                .name("foo")
                 .circuitControlFirstSignal('wood', 'item')
                 .circuitControlComparator('<')
                 .circuitControlSecondSignal('stone-wall', 'item')
