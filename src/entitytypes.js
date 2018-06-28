@@ -287,16 +287,23 @@ const Filter = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.filters) this.filters(obj.filters);
+      if (obj.filters) this.filters(
+              obj.filters.reduce((acc, v) => {
+                // -1 is to shift from a 1-indexed list to 0 indexed.
+                acc[(+v.index) -1] = v.name.replace(/-/g, '_');
+                return acc;
+              }, {})
+
+            );
     }
 
     toObject() {
       const mine = {
         filters: Object.entries(this.filters())
                 .map(e => {
-                  // XXX +1 is to shoft from a 0-indexed list to a 1-indexed list.
+                  // +1 is to shift from a 0-indexed list to a 1-indexed list.
                   return {index: (+e[0]) + 1, name: e[1].replace(/_/g, '-')};
-                }, {})
+                })
       };
 
       const sup = (super.toObject) ? super.toObject() : {};

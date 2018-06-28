@@ -303,11 +303,11 @@ describe('Entity Features', function () {
     it('can read from an input object', function () {
       const entity = new FilterEntity();
       entity.fromObject({
-        filters: {
-          '1': 'iron-plate'
-        }
+        filters: [
+          {index: '1', name: 'iron-plate'}
+        ]
       });
-      assert.equal(entity.filters()[1], 'iron-plate');
+      assert.equal(entity.filters()[0], 'iron_plate');
     });
     it('can output to an object', function () {
       const entity = new FilterEntity()
