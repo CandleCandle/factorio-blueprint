@@ -62,9 +62,6 @@ module.exports = function (entityData) {
     if (staticEntityData.modules) {
       features.push(entitytypes.Modules);
     }
-//    if (staticEntityData.inventorySize) {
-//      features.push(entitytypes.Inventory);
-//    }
 
 
     console.log("using features: ", features);
@@ -152,7 +149,7 @@ module.exports = function (entityData) {
     get bar() {
       return this.wrapped.bar();
     }
-    setBar(b) {
+    setBar(bar) {
       this.wrapped.bar(bar);
     }
     get recipe() {
