@@ -108,7 +108,7 @@ describe('Blueprint Parsing', function () {
       assert.equal(assembler.direction, Blueprint.UP);
       assert.equal(assembler.position.x, -1);
       assert.equal(assembler.position.y, -1);
-      assert.equal(assembler.recipe, 'rocket_fuel'); // XXX should be stone-wall?
+      assert.equal(assembler.recipe, 'rocket_fuel'); // XXX should be rocket-fuel?
       assert.equal(assembler.modules['speed_module_3'], 1);
       assert.equal(assembler.modules['effectivity_module_3'], 1);
       assert.equal(assembler.modules['productivity_module_3'], 2);
