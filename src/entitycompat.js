@@ -48,7 +48,7 @@ module.exports = function (entityData) {
       features.push(entitytypes.Position);
       features.push(entitytypes.Connections); // XXX Not every entity can actually accept connections, but most can, so until we can define this on a type-by-type basis, enable it for everything.
     }
-    if (name.endsWith('filter_inserter')) {
+    if (name.endsWith('filter_inserter') || name.endsWith('filter-inserter')) {
       features.push(entitytypes.Filter);
     }
     if (staticEntityData.inventorySize) {
@@ -179,6 +179,9 @@ module.exports = function (entityData) {
     }
     set modules(obj) {
       return this.wrapped.modules(obj);
+    }
+    get filters() {
+      return this.wrapped.filters();
     }
     // TODO implement request filter mixin.
 //    get requestFilters() {
