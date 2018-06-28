@@ -195,6 +195,9 @@ describe('Blueprint Generation', function () {
 
       const obj = bp.toObject();
 
+      console.log("final obj: ", obj.blueprint.entities);
+      console.log("final obj: ", obj.blueprint.entities[0].connections);
+      console.log("final obj: ", obj.blueprint.entities[0].connections['1']);
       assert.equal(obj.blueprint.entities[0].name, "medium-electric-pole");
       assert.equal(obj.blueprint.entities[0].entity_number, 1);
       assert.equal(obj.blueprint.entities[0].connections['1'].red[0].entity_id, 2);

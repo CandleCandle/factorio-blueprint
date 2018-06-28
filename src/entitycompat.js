@@ -46,6 +46,7 @@ module.exports = function (entityData) {
     if (staticEntityData.type === 'item') {
       features.push(entitytypes.Direction);
       features.push(entitytypes.Position);
+      features.push(entitytypes.Connections); // XXX Not every entity can actually accept connections, but most can, so until we can define this on a type-by-type basis, enable it for everything.
     }
     if (name.endsWith('filter_inserter')) {
       features.push(entitytypes.Filter);
@@ -111,7 +112,7 @@ module.exports = function (entityData) {
       if (typeof this.wrapped.updateConnections === 'function') {
         const numberMap = {};
         entities.forEach(e => {
-          numberMap[e.number()] = e;
+          numberMap[e.wrapped.number()] = e;
         });
         this.wrapped.updateConnections(numberMap);
       }
@@ -140,6 +141,18 @@ module.exports = function (entityData) {
       this.wrapped.withFilter(idx, type);
     }
 
+    connect(other, mySide, theirSide, colour) {
+      const myActualSide = mySide ? mySide : 1;
+      const theirActualSide = theirSide ? theirSide : 1;
+      this.wrapped.connectTo(other.wrapped, myActualSide, theirActualSide, colour);
+    }
+
+    set id(id) {
+      this.wrapped.number(id);
+    }
+    get id() {
+      this.wrapped.number();
+    }
     get x() {
       return this.wrapped.x();
     }

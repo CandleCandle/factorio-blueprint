@@ -478,7 +478,7 @@ const Connections = (superclass) => class extends superclass {
     }
 
     updateConnections(entityNumberMap) {
-      if (typeof _rawConnections === 'undefiend') return; // early exit for entities that have no connections.
+      if (typeof _rawConnections === 'undefined') return; // early exit for entities that have no connections.
       // Example _rawConnections
       // {
       //   '1': { red: [ { entity_id: 1 } ] },
