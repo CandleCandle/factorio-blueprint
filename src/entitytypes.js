@@ -370,7 +370,16 @@ const Modules = (superclass) => class extends superclass {
     fromObject(obj) {
       super.fromObject(obj);
       if (obj.modules) this.maxModules(obj.modules);
-      if (obj.items) { this.modules(obj.items); } else { this.modules({}); };
+      if (obj.items) {
+        this.modules(
+                Object.entries(obj.items)
+                .reduce((acc, v) => {
+                  acc[v[0].replace(/-/g, '_')] = v[1];
+                  return acc;
+                }, {}));
+      } else {
+        this.modules({});
+      };
     }
 
     toObject() {

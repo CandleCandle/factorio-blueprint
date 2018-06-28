@@ -252,7 +252,7 @@ describe('Entity Features', function () {
         modules: 2,
         items: {'speed-module': 1}
       });
-      assert.equal(entity.modules()['speed-module'], 1);
+      assert.equal(entity.modules()['speed_module'], 1); // XXX the key here should be 'speed-module'; but needs to have the underscore to maintain compatibility.
       assert.equal(entity.maxModules(), 2);
     });
     it('can output to an object', function () {

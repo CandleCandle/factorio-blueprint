@@ -180,6 +180,10 @@ module.exports = function (entityData) {
     set modules(obj) {
       return this.wrapped.modules(obj);
     }
+    // TODO implement request filter mixin.
+//    get requestFilters() {
+//      return this.wrapped.modules();
+//    }
   }
 
   return Entity;
