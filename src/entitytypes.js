@@ -47,7 +47,7 @@ class BaseEntity {
 
   toObject() {
     return {
-      name: this.name(),
+      name: this.name().replace(/_/g, '-'),
       entity_number: this.number()
     };
   }
@@ -102,7 +102,11 @@ const Direction = (superclass) => class extends superclass {
 
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.direction) this.direction(obj.direction);
+      if (obj.direction) {
+        this.direction(obj.direction);
+      } else {
+        this.direction(0);
+      }
     }
 
     toObject() {
@@ -389,7 +393,7 @@ const Recipe = (superclass) => class extends superclass {
 
     toObject() {
       const mine = {
-        recipe: this.recipe()
+        recipe: this.recipe().replace(/_/g, '-')
       };
 
       const sup = (super.toObject) ? super.toObject() : {};

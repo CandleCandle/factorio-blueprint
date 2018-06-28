@@ -30,6 +30,7 @@ module.exports = function (entityData) {
    * @param {type} name
    * @return {class}
    */
+  // TODO convert this to a static function in Entity so that it can be tested externally.
   function createType(name) {
 //        console.log(entityData);
     const staticEntityData = entityData[nameToKey(name)];
@@ -37,11 +38,14 @@ module.exports = function (entityData) {
 
     // least specific to the most specific; thus any specific implementation
     // can override the generic implementation.
+    // the following guess-work could be pushed into the entitydata as an
+    // element on the object. That way the functionality is defined in input
+    // data and not in some arbitrary rule set.
     features = [];
 
     if (staticEntityData.type === 'item') {
-      features.push(entitytypes.Position);
       features.push(entitytypes.Direction);
+      features.push(entitytypes.Position);
     }
     if (name.endsWith('filter_inserter')) {
       features.push(entitytypes.Filter);
@@ -52,6 +56,10 @@ module.exports = function (entityData) {
     if (staticEntityData.modules) {
       features.push(entitytypes.Modules);
     }
+    if (name.includes('assembling')) {
+      features.push(entitytypes.Recipe);
+    }
+
 
     console.log("using features: ", features);
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
@@ -60,8 +68,10 @@ module.exports = function (entityData) {
   class Entity {
     constructor(data, _positionGrid, _bp, center) {
       this.wrapped = new (getType(data.name))();
-      console.log(Object.getOwnPropertyNames(this.wrapped));
-      this.wrapped.fromObject({...entityData[nameToKey(data.name)], ...data});
+      const mergedEntityData = {...entityData[nameToKey(data.name)], ...data};
+      console.log("merged entity data: ", mergedEntityData);
+      this.wrapped.fromObject(mergedEntityData);
+      console.log("final wrapped: ", this.wrapped);
     }
 
     checkNoOverlap(positionGrid) {
@@ -77,8 +87,70 @@ module.exports = function (entityData) {
       return item;
     }
 
-    place() {
-      // xxx 
+    /**
+     * Sort out the inter-entity connections
+     * @param {type} entityPositionGrid "x,y" indexed table mapping positions to entities
+     * @param {type} entities list of all entities; All entities MUST have a number.
+     */
+    place(entityPositionGrid, entities) {
+      entities.forEach(e => { // e in this case is an entitycompat.
+        e.tileDataAction({}, (x, y) => entityPositionGrid[x+','+y] = e );
+      });
+      this.updateConnections(entities);
+    }
+
+    /**
+     * Sort out the inter-entity connections
+     * @param {type} entityPositionGrid "x,y" indexed table mapping positions to entities
+     * @param {type} entities list of all entities
+     */
+    updateConnections(entities) {
+      if (typeof this.wrapped.updateConnections === 'function') {
+        const numberMap = {};
+        entities.forEach(e => {
+          numberMap[e.number()] = e;
+        });
+        this.wrapped.updateConnections(numberMap);
+      }
+    }
+
+    tileDataAction(_positionGrid, fn) {
+      this.wrapped.tileDataAction(fn);
+    }
+
+    getData() {
+      return this.wrapped.toObject();
+    }
+
+    setRecipe(recipe) {
+      if (typeof this.wrapped.recipe === 'function') {
+        this.wrapped.recipe(recipe);
+      }
+    }
+
+    get x() {
+      return this.wrapped.x();
+    }
+    get y() {
+      return this.wrapped.y();
+    }
+    get position() {
+      return this.wrapped.position();
+    }
+    get direction() {
+      return this.wrapped.direction();
+    }
+    get name() {
+      return this.wrapped.name().replace(/-/g, '_');
+    }
+    get bar() {
+      return this.wrapped.bar();
+    }
+    setBar(b) {
+      this.wrapped.bar();
+    }
+    get recipe() {
+      return this.wrapped.recipe().replace(/-/g, '_');
     }
   }
 
