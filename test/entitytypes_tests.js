@@ -49,6 +49,7 @@ describe('Entity Features', function () {
   describe('entities with positions', function () {
     // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
     const PositionEntity = mixwith.mix(entity.BaseEntity).with(entity.Position);
+    const PositionDirectionEntity = mixwith.mix(entity.BaseEntity).with(entity.Direction, entity.Position);
 
     it('can get/set the position property', function () {
       const entity = new PositionEntity().name('stone-wall');
@@ -84,18 +85,31 @@ describe('Entity Features', function () {
     });
     it('can output to an object', function () {
       const entity = new PositionEntity().name('stone-wall')
+              .width(1).height(1) // normally set when the entity is created, from the static entitydata.
               .x(4)
               .y(7)
               ;
       const obj = entity.toObject();
+      console.log("entity: ", entity);
+      console.log("obj: ", obj);
       assert.equal(obj.name, 'stone-wall');
       assert.equal(obj.position.x, 4);
       assert.equal(obj.position.y, 7);
     });
+    it('can output non-square entities to an object', function () {
+      const entity = new PositionDirectionEntity().name('boiler')
+              .x(4).y(7).direction(2)
+              .width(3).height(2) // normally set when the entity is created, from the static entitydata.
+              ;
+      const obj = entity.toObject();
+      assert.equal(obj.name, 'boiler');
+      // add 1/2 the size, then subtract 0.5, 0.5.
+      assert.equal(obj.position.x, 4.5);
+      assert.equal(obj.position.y, 8);
+    });
 
     describe('tileDataAction', function () {
       // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
-      const PositionDirectionEntity = mixwith.mix(entity.BaseEntity).with(entity.Direction, entity.Position);
       it('performs an action for all tiles for a 1x1 square entity', function () {
         const entity = new PositionEntity();
         entity.fromObject({
@@ -577,6 +591,7 @@ describe('entity mixins', function () {
       const FilterInserter = mixwith.mix(entity.BaseEntity).with(entity.Position, entity.Direction, entity.Filter);
       const fi = new FilterInserter()
               .name("filter-inserter")
+              .width(1).height(1) // normally set when the entity is created, from the static entitydata.
               .x(4).y(5)
               .direction(6)
               .filters({0: "stone"})

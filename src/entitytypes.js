@@ -8,10 +8,18 @@ const mixwith = require('mixwith');
  * * tileDataAction *
  * tileDataAction needs to know about: position, size and direction.
  * Option 1: use if (typeof this.{function} === 'function') to detect that the resulting class is mixed with the appropriate other mixin.
+ *    - can lead to complicated code;
+ *    - can lead to hidden depependencies between mixins; and therefore a hidden ordering
+ *    - a work-around might be to define the dependencies in code and warn/enforce them when creating classes.
+ *
  * Option 2: have all of position+size+direction in the same mixin
+ *    - leads to one-big-class, which is the problem that mixins are trying to solve.
+ *
  * Option 3: Keep them separate and define another mixin that depends on the others being there.
+ *    - arbitrary mixins that don't really relate to a feature
+ *
  * 
- * dependency tree:
+ * Current dependency tree:
  * size depends-on direction
  * position depends-on size
  * tileDataAction depends-on position
@@ -194,8 +202,14 @@ const Position = (superclass) => class extends superclass {
     }
 
     toObject() {
+
+      // move the actual coordinates to the centre of the entity then move to the top-left corner.
+      const size = this.effectiveSize();
+      const adjustedPosition = this.position().clone()
+        .add(size.clone().divide(new Victor(2,2)))
+        .subtract(new Victor(0.5, 0.5));
       const mine = {
-        position: {x: this.x(), y: this.y()}
+        position: {x: adjustedPosition.x, y: adjustedPosition.y}
       };
 
       const sup = (super.toObject) ? super.toObject() : {};
@@ -402,7 +416,8 @@ class Connection {
       'out': '2',
       'Cu0': 'Cu0',
       'Cu1': 'Cu1'
-    }
+    };
+    return mapping[side];
   }
 }
 
