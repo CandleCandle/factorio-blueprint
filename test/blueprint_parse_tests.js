@@ -321,18 +321,6 @@ describe('Blueprint Parsing', function () {
     });
   });
   describe('directions & positions', function () {
-    const dump = input => {
-      console.log("decoded", util.decode[0](input).blueprint.entities.map(e => {
-        return {
-          n: e.name,
-          p: e.position,
-//            p2: Victor.fromObject(e.position).add(new Victor(0.5, 0.5)),
-          d: e.direction,
-          f: (e.control_behavior ? e.control_behavior.decider_conditions.first_signal.name : "NONE"),
-          s: (e.control_behavior ? e.control_behavior.decider_conditions.second_signal.name : "NONE")
-        };
-      }));
-    };
     it('understands 2x1 entities (combinators)', function () {
       const input = '0eNrNl1tugzAQRfcy31BhQ0iKupOqQjyc1hLYyJg0KGLv9YO0qUKruiKKvyKG8fVwdD0Tn6BsBtIJyiRkJ6AVZz1kzyfo6SsrGh2TY0cgAypJCwGwotVPNaloTURY8bakrJBcwBQAZTU5QoamlwAIk1RSYtXMw5izoS2JUAm/6QTQ8V4t5UzvfjTZI2Rh/LBRW6gCpeBNXpK34kBVusqZRXL1rjYLex3dU9HL/Oo7DlTIQUU+S7AZYaQ/oCda4++LMJiS2q4QpvYMnkAHulEVMzCZ7wVvc8q6QeGVYiDTNAVXOLATjsjiSDzEgVbBETvh0L6wRLDavKaCVPZtekM66f3MkrjRwWc6sed04lXobJzo4Nk4Hh6ldXCkbmZJzmZBnptlnUaz/ZKVnJHwvWiaBSp2/kRLCjsXBUV1QeLxTxLRzzWgyEFhuQbkNpDPHTf67hJ8Q5fg+7kEYcd5ZNgg01Mu6CQ3pJPcr8Mgx2ltWy72ns46wxq5TWs0Hyzs+cFayTqOw3qGgzyHs5JzHEe3HTGx9+fqPz1Z3SbN7TO7uKwG0BQlUTuCxUJEr2IH9WP/sey2GO3iNIqTafoAsb0nAg==';
       const bp = new Blueprint().load(input);
