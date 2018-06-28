@@ -59,6 +59,12 @@ module.exports = function (entityData) {
     if (name.includes('assembling')) {
       features.push(entitytypes.Recipe);
     }
+    if (staticEntityData.modules) {
+      features.push(entitytypes.Modules);
+    }
+//    if (staticEntityData.inventorySize) {
+//      features.push(entitytypes.Inventory);
+//    }
 
 
     console.log("using features: ", features);
@@ -147,10 +153,16 @@ module.exports = function (entityData) {
       return this.wrapped.bar();
     }
     setBar(b) {
-      this.wrapped.bar();
+      this.wrapped.bar(bar);
     }
     get recipe() {
       return this.wrapped.recipe().replace(/-/g, '_');
+    }
+    get modules() {
+      return this.wrapped.modules();
+    }
+    set modules(obj) {
+      return this.wrapped.modules(obj);
     }
   }
 

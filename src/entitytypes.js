@@ -365,12 +365,17 @@ const Modules = (superclass) => class extends superclass {
     fromObject(obj) {
       super.fromObject(obj);
       if (obj.modules) this.maxModules(obj.modules);
-      if (obj.items) this.modules(obj.items);
+      if (obj.items) { this.modules(obj.items); } else { this.modules({}); };
     }
 
     toObject() {
       const mine = {
-        items: this.modules()
+        // fix key names to use hyphens and not underscores.
+        items: Object.entries(this.modules())
+                .reduce((acc, v) => {
+                  acc[v[0].replace(/_/g, '-')] = v[1];
+                  return acc;
+                }, {})
       };
 
       const sup = (super.toObject) ? super.toObject() : {};
