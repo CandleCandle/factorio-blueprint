@@ -222,6 +222,14 @@ describe('Entity Features', function () {
       assert.equal(entity.bar(), 4);
       assert.equal(entity.maxInventory(), 9);
     });
+    it('can read from an input object - where there is no bar', function () {
+      const entity = new InventoryEntity();
+      entity.fromObject({
+        maxInventory: 9
+      });
+      assert.equal(entity.bar(), -1);
+      assert.equal(entity.maxInventory(), 9);
+    });
     it('can output to an object', function () {
       const entity = new InventoryEntity()
               .name('stone-wall')
