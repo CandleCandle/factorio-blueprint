@@ -313,7 +313,8 @@ describe('Entity Features', function () {
               .filters({'4': 'steel-plate'})
               ;
       const obj = entity.toObject();
-      assert.equal(obj.filters['4'], 'steel-plate');
+      assert.equal(obj.filters[0].index, '4');
+      assert.equal(obj.filters[0].name, 'steel-plate');
     });
   });
 
@@ -605,7 +606,8 @@ describe('entity mixins', function () {
       assert.equal(obj.position.x, 4);
       assert.equal(obj.position.y, 5);
       assert.equal(obj.direction, 6);
-      assert.equal(obj.filters["0"], 'stone');
+      assert.equal(obj.filters[0].index, 1);
+      assert.equal(obj.filters[0].name, 'stone');
 
     });
   });

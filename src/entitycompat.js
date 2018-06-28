@@ -131,6 +131,15 @@ module.exports = function (entityData) {
       }
     }
 
+    setBar(bar) {
+      if (typeof bar === 'number' && bar < 0) throw new Error('You must provide a positive value to setBar()');
+      this.wrapped.bar(typeof bar !== 'number' ? -1 : bar);
+    }
+
+    setFilter(idx, type) {
+      this.wrapped.withFilter(idx, type);
+    }
+
     get x() {
       return this.wrapped.x();
     }
@@ -148,9 +157,6 @@ module.exports = function (entityData) {
     }
     get bar() {
       return this.wrapped.bar();
-    }
-    setBar(bar) {
-      this.wrapped.bar(bar);
     }
     get recipe() {
       return this.wrapped.recipe().replace(/-/g, '_');

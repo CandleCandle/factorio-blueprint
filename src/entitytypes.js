@@ -233,6 +233,7 @@ const Filter = (superclass) => class extends superclass {
     }
 
     withFilter(index, type) {
+      if (typeof this.filters() === 'undefined') this.filters({});
       this._filters[index] = type;
       return this;
     }
@@ -250,7 +251,11 @@ const Filter = (superclass) => class extends superclass {
 
     toObject() {
       const mine = {
-        filters: this.filters()
+        filters: Object.entries(this.filters())
+                .map(e => {
+                  // XXX +1 is to shoft from a 0-indexed list to a 1-indexed list.
+                  return {index: (+e[0]) + 1, name: e[1].replace(/_/g, '-')};
+                }, {})
       };
 
       const sup = (super.toObject) ? super.toObject() : {};
