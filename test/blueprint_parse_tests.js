@@ -315,9 +315,9 @@ describe('Blueprint Parsing', function () {
   describe('decider combinators', function () {
     it('uses "each"', function () {
       const input = '0eNqVkttqwzAMht9F185ok7bbcrEXGSM4idoK4gOKUxaC331yMkJpt7LdGHT8P0uaoO4G9Ew2QDkBNc72UL5P0NPJ6i75wugRSqCABhRYbZLVYkMtctY4U5PVwTFEBWRb/IRyGz8UoA0UCJduszFWdjA1siSsfQy2NJgMO2wCU5N516GoeNdLsbNJXxpmBwVj6qtAAK3k0sw5wTY9jO21ComVSyZxM1CYTSGKMao7kPzRh+4xNk/7FaQlXjgWMWcDu66q8awvJMVS8d2yklhLK/GRuA/V3XgvxGEQzwq0ZGSomzMs/+6DTlvavSbLeM0zZQlvkBx+FKHBhurIzlRk/SC5R931GP8+tjQnBXmKnhjR3saLX+ZY/HOh+4f7/FH6ZqP5TCJ3Nt9leXXGCi7I/ax1eHnOty/FYVPsYvwCygX/SA==';
-      const decoded = util.decode[0](input);
-      console.log("decoded: ", decoded.blueprint.entities[1]);
-      console.log("decoded control: ", decoded.blueprint.entities[1].control_behavior);
+//      const decoded = util.decode[0](input);
+//      console.log("decoded: ", decoded.blueprint.entities[1]);
+//      console.log("decoded control: ", decoded.blueprint.entities[1].control_behavior);
 //      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
 //        return {
 //          name: e.name,
@@ -340,6 +340,10 @@ describe('Blueprint Parsing', function () {
   describe('constant combinators', function () {
     it('basic setup', function () {
       const input = '0eNqNkdFqwzAMRf9Fzw7UyehCfmWU4jjaJrDl4DihIfjfJ7tQCoXRFxuZq3t15ANGt+IciRMMB5ANvMDwdcBCP2xceUv7jDAAJfSggI0vVdElw6mxwY/EJoUIWQHxhDcYdL4oQE6UCO92tdivvPoRowj+NVIwh0V6A5d88Ws6BbtcWiKkIcXgriP+mo1ELZJvcgnjW4ObaTNscWosRbtSgmq5Fvz+9ADo8+UexWjLHEvx0+WIOD0DkVStiHNWL5DtI9TjRKtv0IlbJNvMweErZVsh9fvBugbLqivi8PSVCjbZR7U+95+t7rvzqfvI+Q/5g6g5';
+      const decoded = util.decode[0](input);
+      console.log("decoded: ", decoded.blueprint.entities[0]);
+      console.log("decoded control: ", decoded.blueprint.entities[0].control_behavior);
+      console.log("decoded filters: ", decoded.blueprint.entities[0].control_behavior.filters);
 //      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
 //        return {
 //          name: e.name,

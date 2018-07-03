@@ -68,6 +68,9 @@ module.exports = function (entityData) {
     if (name.match(/arithmetic[-_]combinator/)) {
       features.push(entitytypes.ArithmeticCombinator);
     }
+    if (name.match(/constant[-_]combinator/)) {
+      features.push(entitytypes.ConstantCombinator);
+    }
 
     console.log("using features: ", features);
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
@@ -219,6 +222,9 @@ module.exports = function (entityData) {
       this.fnApply('arithmeticConditionOutputSignal', r => result.out = r.name.replace(/-/g, '_'));
 
       return result;
+    }
+    get constants() {
+      return this.wrapped.constantFilters();
     }
     // TODO implement request filter mixin.
 //    get requestFilters() {
