@@ -54,6 +54,7 @@ module.exports = function (entityData) {
     }
     if (staticEntityData.inventorySize) {
       features.push(entitytypes.Inventory);
+      features.push(entitytypes.LogisticFilter); // XXX assume entities that have an inventory can also have logistic filters.
     }
     if (staticEntityData.modules) {
       features.push(entitytypes.Modules);
@@ -183,6 +184,9 @@ module.exports = function (entityData) {
     }
     get filters() {
       return this.wrapped.filters();
+    }
+    get requestFilters() {
+      return this.wrapped.logisticFilters();
     }
     get condition() {
       const result = {
