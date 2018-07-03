@@ -643,18 +643,18 @@ describe('Entity Features', function () {
             }
           }
         });
-        assert.equal(entity.arithmethicConditionFirstSignal().name, 'big-electric-pole');
-        assert.equal(entity.arithmethicConditionOperation(), '*');
-        assert.equal(entity.arithmethicConditionSecondConstant(), 1);
-        assert.equal(entity.arithmethicConditionOutputSignal().name, 'signal-C');
+        assert.equal(entity.arithmeticConditionFirstSignal().name, 'big-electric-pole');
+        assert.equal(entity.arithmeticConditionOperation(), '*');
+        assert.equal(entity.arithmeticConditionSecondConstant(), 1);
+        assert.equal(entity.arithmeticConditionOutputSignal().name, 'signal-C');
       });
       it('can output to an object', function () {
         const entity = new ArithmeticCombinatorEntity()
                 .name('random-arithmetic-compinator')
-                .arithmethicConditionFirstSignal({name: 'signal-A', type: 'virtual'})
-                .arithmethicConditionOperation('+')
-                .arithmethicConditionSecondSignal({name: 'signal-B', type: 'virtual'})
-                .arithmethicConditionOutputSignal({name: 'signal-C', type: 'virtual'})
+                .arithmeticConditionFirstSignal({name: 'signal-A', type: 'virtual'})
+                .arithmeticConditionOperation('+')
+                .arithmeticConditionSecondSignal({name: 'signal-B', type: 'virtual'})
+                .arithmeticConditionOutputSignal({name: 'signal-C', type: 'virtual'})
                 ;
         const obj = entity.toObject();
         assert.equal(obj.control_behavior.arithmetic_conditions.first_signal.name, 'signal-A');
@@ -664,6 +664,37 @@ describe('Entity Features', function () {
         assert.equal(obj.control_behavior.arithmetic_conditions.second_signal.type, 'virtual');
         assert.equal(obj.control_behavior.arithmetic_conditions.output_signal.name, 'signal-C');
         assert.equal(obj.control_behavior.arithmetic_conditions.output_signal.type, 'virtual');
+      });
+    });
+    describe('decider', function() {
+      const ArithmeticCombinatorEntity = mixwith.mix(entity.BaseEntity).with(entity.DeciderCombinator);
+      it('can read from an input object', function () {
+        const entity = new ArithmeticCombinatorEntity();
+        entity.fromObject({
+          control_behavior: {
+            decider_conditions: {
+              first_signal: {type: 'item', name: 'medium-electric-pole'},
+              constant: 42,
+              comparator: '>'
+            }
+          }
+        });
+        assert.equal(entity.deciderConditionFirstSignal().name, 'medium-electric-pole');
+        assert.equal(entity.deciderConditionComparator(), '>');
+        assert.equal(entity.deciderConditionConstant(), 42);
+      });
+      it('can output to an object', function () {
+        const entity = new ArithmeticCombinatorEntity()
+                .name('random-arithmetic-compinator')
+                .deciderConditionFirstSignal({name: 'signal-A', type: 'virtual'})
+                .deciderConditionComparator('<')
+                .deciderConditionConstant(9)
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.control_behavior.decider_conditions.first_signal.name, 'signal-A');
+        assert.equal(obj.control_behavior.decider_conditions.first_signal.type, 'virtual');
+        assert.equal(obj.control_behavior.decider_conditions.constant, 9);
+        assert.equal(obj.control_behavior.decider_conditions.comparator, '<');
       });
     });
   });

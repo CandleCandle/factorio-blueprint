@@ -62,7 +62,9 @@ module.exports = function (entityData) {
     if (name.includes('assembling')) {
       features.push(entitytypes.Recipe);
     }
-
+    if (name.match(/decider[-_]combinator/)) {
+      features.push(entitytypes.DeciderCombinator);
+    }
     if (name.match(/arithmetic[-_]combinator/)) {
       features.push(entitytypes.ArithmeticCombinator);
     }
@@ -201,17 +203,20 @@ module.exports = function (entityData) {
       this.fnApply('circuitControlEnabled', r => result.controlEnable = r);
 
       this.fnApply('circuitControlFirstSignal', r => result.left = r.name.replace(/-/g, '_'));
-      this.fnApply('arithmethicConditionFirstSignal', r => result.left = r.name.replace(/-/g, '_'));
+      this.fnApply('arithmeticConditionFirstSignal', r => result.left = r.name.replace(/-/g, '_'));
+      this.fnApply('deciderConditionFirstSignal', r => result.left = r.name.replace(/-/g, '_'));
 
       this.fnApply('circuitControlComparator', r => result.operator = r);
-      this.fnApply('arithmethicConditionOperation', r => result.operator = r);
+      this.fnApply('arithmeticConditionOperation', r => result.operator = r);
+      this.fnApply('deciderConditionComparator', r => result.operator = r);
 
       this.fnApply('circuitControlConstant', r => result.right = r);
       this.fnApply('circuitControlSecondSignal', r => result.right = r.name.replace(/-/g, '_'));
-      this.fnApply('arithmethicConditionSecondConstant', r => result.right = r);
-      this.fnApply('arithmethicConditionSecondSignal', r => result.right = r.name.replace(/-/g, '_'));
+      this.fnApply('arithmeticConditionSecondConstant', r => result.right = r);
+      this.fnApply('arithmeticConditionSecondSignal', r => result.right = r.name.replace(/-/g, '_'));
+      this.fnApply('deciderConditionConstant', r => result.right = r);
 
-      this.fnApply('arithmethicConditionOutputSignal', r => result.out = r.name.replace(/-/g, '_'));
+      this.fnApply('arithmeticConditionOutputSignal', r => result.out = r.name.replace(/-/g, '_'));
 
       return result;
     }

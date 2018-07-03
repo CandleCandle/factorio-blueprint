@@ -652,24 +652,24 @@ const Connections = (superclass) => class extends superclass {
 
 const ArithmeticCombinator = (superclass) => class extends superclass {
 
-    arithmethicConditionFirstSignal(value) {
-      return this._property('_arithmethicConditionFirstSignal', value);
+    arithmeticConditionFirstSignal(value) {
+      return this._property('_arithmeticConditionFirstSignal', value);
     }
 
-    arithmethicConditionOperation(value) {
-      return this._property('_arithmethicConditionOperation', value);
+    arithmeticConditionOperation(value) {
+      return this._property('_arithmeticConditionOperation', value);
     }
 
-    arithmethicConditionSecondConstant(value) {
-      return this._property('_arithmethicConditionSecondConstant', value);
+    arithmeticConditionSecondConstant(value) {
+      return this._property('_arithmeticConditionSecondConstant', value);
     }
 
-    arithmethicConditionSecondSignal(value) {
-      return this._property('_arithmethicConditionSecondSignal', value);
+    arithmeticConditionSecondSignal(value) {
+      return this._property('_arithmeticConditionSecondSignal', value);
     }
 
-    arithmethicConditionOutputSignal(value) {
-      return this._property('_arithmethicConditionOutputSignal', value);
+    arithmeticConditionOutputSignal(value) {
+      return this._property('_arithmeticConditionOutputSignal', value);
     }
 
     fromObject(obj) {
@@ -677,11 +677,11 @@ const ArithmeticCombinator = (superclass) => class extends superclass {
       if (obj.control_behavior && obj.control_behavior.arithmetic_conditions) {
         // <output_signal> = <first_signal> <operator> {<second_constant> XOR <second_signal>}
         const ac = obj.control_behavior.arithmetic_conditions;
-        if (ac.first_signal) this.arithmethicConditionFirstSignal(ac.first_signal);
-        if (ac.second_constant) this.arithmethicConditionSecondConstant(ac.second_constant);
-        if (ac.second_signal) this.arithmethicConditionSecondSignal(ac.second_signal);
-        if (ac.operation) this.arithmethicConditionOperation(ac.operation);
-        if (ac.output_signal) this.arithmethicConditionOutputSignal(ac.output_signal);
+        if (ac.first_signal) this.arithmeticConditionFirstSignal(ac.first_signal);
+        if (ac.second_constant) this.arithmeticConditionSecondConstant(ac.second_constant);
+        if (ac.second_signal) this.arithmeticConditionSecondSignal(ac.second_signal);
+        if (ac.operation) this.arithmeticConditionOperation(ac.operation);
+        if (ac.output_signal) this.arithmeticConditionOutputSignal(ac.output_signal);
       }
     }
 
@@ -689,14 +689,14 @@ const ArithmeticCombinator = (superclass) => class extends superclass {
       const mine = {
         control_behavior: {
           arithmetic_conditions: {
-            first_signal: this.arithmethicConditionFirstSignal(),
+            first_signal: this.arithmeticConditionFirstSignal(),
 
-            operation: this.arithmethicConditionOperation(),
+            operation: this.arithmeticConditionOperation(),
 
-            second_signal: this.arithmethicConditionSecondSignal(),
-            second_constant: this.arithmethicConditionSecondConstant(),
+            second_signal: this.arithmeticConditionSecondSignal(),
+            second_constant: this.arithmeticConditionSecondConstant(),
 
-            output_signal: this.arithmethicConditionOutputSignal()
+            output_signal: this.arithmeticConditionOutputSignal()
           }
         }
       };
@@ -710,6 +710,50 @@ const ArithmeticCombinator = (superclass) => class extends superclass {
     }
 };
 
+const DeciderCombinator = (superclass) => class extends superclass {
+
+    deciderConditionFirstSignal(value) {
+      return this._property('_deciderConditionFirstSignal', value);
+    }
+
+    deciderConditionComparator(value) {
+      return this._property('_deciderConditionComparator', value);
+    }
+
+    deciderConditionConstant(value) {
+      return this._property('_deciderConditionConstant', value);
+    }
+
+    fromObject(obj) {
+      super.fromObject(obj);
+      if (obj.control_behavior && obj.control_behavior.decider_conditions) {
+        // <output_signal> = <first_signal> <operator> {<second_constant> XOR <second_signal>}
+        const dc = obj.control_behavior.decider_conditions;
+        if (dc.first_signal) this.deciderConditionFirstSignal(dc.first_signal);
+        if (dc.comparator) this.deciderConditionComparator(dc.comparator);
+        if (dc.constant) this.deciderConditionConstant(dc.constant);
+      }
+    }
+
+    toObject() {
+      const mine = {
+        control_behavior: {
+          decider_conditions: {
+            first_signal: this.deciderConditionFirstSignal(),
+            comparator: this.deciderConditionComparator(),
+            constant: this.deciderConditionConstant()
+          }
+        }
+      };
+
+      const sup = (super.toObject) ? super.toObject() : {};
+      if (sup.control_behavior) {
+        // if we just do '{...sup, ...mine}' then any previous control_behavior would be overwritten
+        mine.control_behavior = {...sup.control_behavior, ...(mine.control_behavior)};
+      }
+      return {...sup, ...mine};
+    }
+};
 
 module.exports = {
   BaseEntity: BaseEntity,
@@ -722,7 +766,8 @@ module.exports = {
   Modules: Modules,
   Recipe: Recipe,
   Connections: Connections,
-  ArithmeticCombinator: ArithmeticCombinator
+  ArithmeticCombinator: ArithmeticCombinator,
+  DeciderCombinator: DeciderCombinator
 };
 
 // vi: sts=2 ts=2 sw=2 et
