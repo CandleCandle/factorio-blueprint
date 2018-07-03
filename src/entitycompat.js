@@ -49,7 +49,7 @@ module.exports = function (entityData) {
       features.push(entitytypes.Connections); // XXX Not every entity can actually accept connections, but most can, so until we can define this on a type-by-type basis, enable it for everything.
       features.push(entitytypes.CircuitControl); // XXX Not every entity has circuit control, but enough can, and there's no defining feature to them that I can identify, so until we can define it in the defaultentities, enable it by default.
     }
-    if (name.endsWith('filter_inserter') || name.endsWith('filter-inserter')) {
+    if (name.match(/filter[-_]inserter/)) {
       features.push(entitytypes.Filter);
     }
     if (staticEntityData.inventorySize) {
@@ -63,9 +63,9 @@ module.exports = function (entityData) {
       features.push(entitytypes.Recipe);
     }
 
-//    if (name.endsWith('combinator')) {
-//      features.push(entitytypes.Combinator);
-//    }
+    if (name.match(/arithmetic[-_]combinator/)) {
+      features.push(entitytypes.ArithmeticCombinator);
+    }
 
     console.log("using features: ", features);
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
@@ -188,15 +188,31 @@ module.exports = function (entityData) {
     get requestFilters() {
       return this.wrapped.logisticFilters();
     }
+    fnApply(fnName, apply) {
+      if (typeof this.wrapped[fnName] === 'function') {
+        const result = this.wrapped[fnName]();
+        if (typeof this.wrapped[fnName]() !== 'undefined') {
+          return apply(result);
+        }
+      }
+    }
     get condition() {
-      const result = {
-        controlEnable: this.wrapped.circuitControlEnabled(),
-        constant: this.wrapped.circuitControlConstant(),
-        operator: this.wrapped.circuitControlComparator()
-      };
-      if (this.wrapped.circuitControlFirstSignal()) result.left = this.wrapped.circuitControlFirstSignal().name.replace(/-/g, '_');
-      if (this.wrapped.circuitControlSecondSignal()) result.right = this.wrapped.circuitControlSecondSignal().name.replace(/-/g, '_');
-      if (this.wrapped.circuitControlConstant()) result.right = this.wrapped.circuitControlConstant();
+      const result = {};
+      this.fnApply('circuitControlEnabled', r => result.controlEnable = r);
+
+      this.fnApply('circuitControlFirstSignal', r => result.left = r.name.replace(/-/g, '_'));
+      this.fnApply('arithmethicConditionFirstSignal', r => result.left = r.name.replace(/-/g, '_'));
+
+      this.fnApply('circuitControlComparator', r => result.operator = r);
+      this.fnApply('arithmethicConditionOperation', r => result.operator = r);
+
+      this.fnApply('circuitControlConstant', r => result.right = r);
+      this.fnApply('circuitControlSecondSignal', r => result.right = r.name.replace(/-/g, '_'));
+      this.fnApply('arithmethicConditionSecondConstant', r => result.right = r);
+      this.fnApply('arithmethicConditionSecondSignal', r => result.right = r.name.replace(/-/g, '_'));
+
+      this.fnApply('arithmethicConditionOutputSignal', r => result.out = r.name.replace(/-/g, '_'));
+
       return result;
     }
     // TODO implement request filter mixin.

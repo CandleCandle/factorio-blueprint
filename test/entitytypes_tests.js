@@ -90,8 +90,6 @@ describe('Entity Features', function () {
               .y(7)
               ;
       const obj = entity.toObject();
-      console.log("entity: ", entity);
-      console.log("obj: ", obj);
       assert.equal(obj.name, 'stone-wall');
       assert.equal(obj.position.x, 4);
       assert.equal(obj.position.y, 7);
@@ -176,7 +174,6 @@ describe('Entity Features', function () {
       });
     });
   });
-
 
   describe('entities with directions', function () {
     // define the class outside the tests to ensure that it's the same class/prototype that is being tested.
@@ -630,6 +627,47 @@ describe('Entity Features', function () {
       assert.equal(obj.request_filters[0].count, 42);
     });
   });
+
+  describe('combinators', function() {
+    describe('arithmethic', function() {
+      const ArithmeticCombinatorEntity = mixwith.mix(entity.BaseEntity).with(entity.ArithmeticCombinator);
+      it('can read from an input object', function () {
+        const entity = new ArithmeticCombinatorEntity();
+        entity.fromObject({
+          control_behavior: {
+            arithmetic_conditions: {
+              first_signal: {type: 'item', name: 'big-electric-pole'},
+              second_constant: 1,
+              operation: '*',
+              output_signal: {type: 'virtual', name: 'signal-C'}
+            }
+          }
+        });
+        assert.equal(entity.arithmethicConditionFirstSignal().name, 'big-electric-pole');
+        assert.equal(entity.arithmethicConditionOperation(), '*');
+        assert.equal(entity.arithmethicConditionSecondConstant(), 1);
+        assert.equal(entity.arithmethicConditionOutputSignal().name, 'signal-C');
+      });
+      it('can output to an object', function () {
+        const entity = new ArithmeticCombinatorEntity()
+                .name('random-arithmetic-compinator')
+                .arithmethicConditionFirstSignal({name: 'signal-A', type: 'virtual'})
+                .arithmethicConditionOperation('+')
+                .arithmethicConditionSecondSignal({name: 'signal-B', type: 'virtual'})
+                .arithmethicConditionOutputSignal({name: 'signal-C', type: 'virtual'})
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.control_behavior.arithmetic_conditions.first_signal.name, 'signal-A');
+        assert.equal(obj.control_behavior.arithmetic_conditions.first_signal.type, 'virtual');
+        assert.equal(obj.control_behavior.arithmetic_conditions.operation, '+');
+        assert.equal(obj.control_behavior.arithmetic_conditions.second_signal.name, 'signal-B');
+        assert.equal(obj.control_behavior.arithmetic_conditions.second_signal.type, 'virtual');
+        assert.equal(obj.control_behavior.arithmetic_conditions.output_signal.name, 'signal-C');
+        assert.equal(obj.control_behavior.arithmetic_conditions.output_signal.type, 'virtual');
+      });
+    });
+  });
+
 });
 
 describe('entity mixins', function () {

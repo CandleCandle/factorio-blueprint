@@ -650,6 +650,67 @@ const Connections = (superclass) => class extends superclass {
     }
   };
 
+const ArithmeticCombinator = (superclass) => class extends superclass {
+
+    arithmethicConditionFirstSignal(value) {
+      return this._property('_arithmethicConditionFirstSignal', value);
+    }
+
+    arithmethicConditionOperation(value) {
+      return this._property('_arithmethicConditionOperation', value);
+    }
+
+    arithmethicConditionSecondConstant(value) {
+      return this._property('_arithmethicConditionSecondConstant', value);
+    }
+
+    arithmethicConditionSecondSignal(value) {
+      return this._property('_arithmethicConditionSecondSignal', value);
+    }
+
+    arithmethicConditionOutputSignal(value) {
+      return this._property('_arithmethicConditionOutputSignal', value);
+    }
+
+    fromObject(obj) {
+      super.fromObject(obj);
+      if (obj.control_behavior && obj.control_behavior.arithmetic_conditions) {
+        // <output_signal> = <first_signal> <operator> {<second_constant> XOR <second_signal>}
+        const ac = obj.control_behavior.arithmetic_conditions;
+        if (ac.first_signal) this.arithmethicConditionFirstSignal(ac.first_signal);
+        if (ac.second_constant) this.arithmethicConditionSecondConstant(ac.second_constant);
+        if (ac.second_signal) this.arithmethicConditionSecondSignal(ac.second_signal);
+        if (ac.operation) this.arithmethicConditionOperation(ac.operation);
+        if (ac.output_signal) this.arithmethicConditionOutputSignal(ac.output_signal);
+      }
+    }
+
+    toObject() {
+      const mine = {
+        control_behavior: {
+          arithmetic_conditions: {
+            first_signal: this.arithmethicConditionFirstSignal(),
+
+            operation: this.arithmethicConditionOperation(),
+
+            second_signal: this.arithmethicConditionSecondSignal(),
+            second_constant: this.arithmethicConditionSecondConstant(),
+
+            output_signal: this.arithmethicConditionOutputSignal()
+          }
+        }
+      };
+
+      const sup = (super.toObject) ? super.toObject() : {};
+      if (sup.control_behavior) {
+        // if we just do '{...sup, ...mine}' then any previous control_behavior would be overwritten
+        mine.control_behavior = {...sup.control_behavior, ...(mine.control_behavior)};
+      }
+      return {...sup, ...mine};
+    }
+};
+
+
 module.exports = {
   BaseEntity: BaseEntity,
   Filter: Filter,
@@ -660,7 +721,8 @@ module.exports = {
   CircuitControl: CircuitControl,
   Modules: Modules,
   Recipe: Recipe,
-  Connections: Connections
+  Connections: Connections,
+  ArithmeticCombinator: ArithmeticCombinator
 };
 
 // vi: sts=2 ts=2 sw=2 et
