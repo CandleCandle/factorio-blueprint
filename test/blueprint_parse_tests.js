@@ -269,12 +269,13 @@ describe('Blueprint Parsing', function () {
   describe('arithmetic combinators', function () {
     it('describes multiplication', function () {
       const input = '0eNqVktFqwzAMRf9Fj8MZbbJ1Ja/9jDGCk2itILaDLZeV4H+fnEBX1nXdXgyypavjK03QDhFHT5ahnoA6ZwPUrxME2ls95Ds+jQg1EKMBBVabHGlPfDDI1BWdMy1Zzc5DUkC2xw+o1+lNAVomJlwE5+DU2Gha9JJwljLYUzQFDtixF73RDSiNRhek2NmMIILFRsEp6yoQRiu5NKNOsM6Hx/6yC0lUSSb5LhLPoRCllNQVSPlPkOdfOfYe0d4hKW+QVHfcvfZk9bjQlELTk19g5i8JG3s3NC0e9JGkWCq+VBt57ulM/k4+cHNn4i3tv1kjTQNmpSwXWOcVkrG6Eb1eQOBB6l3kMf4gfyTPUW7OHZaMYgfZnb9OOY9VQXnT+8VsWcb5N/XFuis4og8z52b7Uq631WZVPaX0CRchDRw=';
-      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
-        return {
-          name: e.name,
-          position: e.position
-        };
-      }));
+//      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
+//        return {
+//          name: e.name,
+//          position: e.position,
+//          cc: e.circuit_condition
+//        };
+//      }));
       const bp = new Blueprint().load(input);
 //      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
 
@@ -288,12 +289,12 @@ describe('Blueprint Parsing', function () {
     });
     it('describes modulo', function () {
       const input = '0eNqVklFqwzAMhu8i2Jsz2mTrSu7QE4wRnERrBbEdbLmsBN99cgJdWdd1ezHIln59/qUJ2iHi6Mky1BNQ52yA+nWCQHurh3zHpxGhBmI0oMBqkyPtiQ8Gmbqic6Ylq9l5SArI9vgB9Tq9KUDLxISL4BycGhtNi14SzlIGe4qmwAE79qI3ugGl0eiCFDubEUSw2Cg4ZV0Fwmgll2bUCdb58NhfdiGJKskk30XiORSilJK6Ain/CfL8K8feI9o7JOUNkuqOu9eerB4XmlJoevILzPwlYWPvhqbFgz6SFEvFl2ojzz2dyd/JB27uTLyl/TdrpGnArJTlAuu8QjJWN6LXCwg8SL2LPMYf5I/kOcrNucOSUewgu/PXKeexKihver+YLcs4/6a+WHcFR/Rh5txsX8r1ttqsqqeUPgEYnQ0h';
-      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
-        return {
-          name: e.name,
-          position: e.position
-        };
-      }));
+//      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
+//        return {
+//          name: e.name,
+//          position: e.position
+//        };
+//      }));
       const bp = new Blueprint().load(input);
 //      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
 
@@ -310,12 +311,12 @@ describe('Blueprint Parsing', function () {
   describe('arithmetic combinators', function () {
     it('uses "each"', function () {
       const input = '0eNqVkttqwzAMht9F185ok7bbcrEXGSM4idoK4gOKUxaC331yMkJpt7LdGHT8P0uaoO4G9Ew2QDkBNc72UL5P0NPJ6i75wugRSqCABhRYbZLVYkMtctY4U5PVwTFEBWRb/IRyGz8UoA0UCJduszFWdjA1siSsfQy2NJgMO2wCU5N516GoeNdLsbNJXxpmBwVj6qtAAK3k0sw5wTY9jO21ComVSyZxM1CYTSGKMao7kPzRh+4xNk/7FaQlXjgWMWcDu66q8awvJMVS8d2yklhLK/GRuA/V3XgvxGEQzwq0ZGSomzMs/+6DTlvavSbLeM0zZQlvkBx+FKHBhurIzlRk/SC5R931GP8+tjQnBXmKnhjR3saLX+ZY/HOh+4f7/FH6ZqP5TCJ3Nt9leXXGCi7I/ax1eHnOty/FYVPsYvwCygX/SA==';
-      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
-        return {
-          name: e.name,
-          position: e.position
-        };
-      }));
+//      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
+//        return {
+//          name: e.name,
+//          position: e.position
+//        };
+//      }));
       const bp = new Blueprint().load(input);
 //      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
 
@@ -332,12 +333,12 @@ describe('Blueprint Parsing', function () {
   describe('constant combinators', function () {
     it('basic setup', function () {
       const input = '0eNqNkdFqwzAMRf9Fzw7UyehCfmWU4jjaJrDl4DihIfjfJ7tQCoXRFxuZq3t15ANGt+IciRMMB5ANvMDwdcBCP2xceUv7jDAAJfSggI0vVdElw6mxwY/EJoUIWQHxhDcYdL4oQE6UCO92tdivvPoRowj+NVIwh0V6A5d88Ws6BbtcWiKkIcXgriP+mo1ELZJvcgnjW4ObaTNscWosRbtSgmq5Fvz+9ADo8+UexWjLHEvx0+WIOD0DkVStiHNWL5DtI9TjRKtv0IlbJNvMweErZVsh9fvBugbLqivi8PSVCjbZR7U+95+t7rvzqfvI+Q/5g6g5';
-      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
-        return {
-          name: e.name,
-          position: e.position
-        };
-      }));
+//      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
+//        return {
+//          name: e.name,
+//          position: e.position
+//        };
+//      }));
       const bp = new Blueprint().load(input);
 //      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
 
@@ -351,12 +352,12 @@ describe('Blueprint Parsing', function () {
     });
     it('with "output off" set', function () {
       const input = '0eNqNkeGKwyAQhN9lfxuoydELeZWjFGO2dwu6BjXhQvDdz02hFApH/ygr48x8usPoFpwjcYZhB7KBEwxfOyT6ZuPkLG8zwgCU0YMCNl4m0WXDubHBj8QmhwhFAfGEvzDoclGAnCkT3u2OYbvy4keMVfCvkYI5pHo3sORXv6ZVsNVN14h6IcfgriP+mJWqukpu5DLGt4qbaTVscWosRbtQhsNyEfz+9ADoBYDSVRrcjEt4D2a00iqJu5Yl4vSMR3Vqy6WUol6Q20cFjxMtvkFX3SLZZg4OX5m7A1m/H6yPYOktwMPTxypY6+sc1uf+s9V9dz51H6X8AWGKrQY=';
-      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
-        return {
-          name: e.name,
-          position: e.position
-        };
-      }));
+//      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
+//        return {
+//          name: e.name,
+//          position: e.position
+//        };
+//      }));
       const bp = new Blueprint().load(input);
 //      console.log("bp ojbect: ", bp.toObject().blueprint.entities);
 
@@ -405,18 +406,27 @@ describe('Blueprint Parsing', function () {
   describe('circuit conditions', function () {
     it('can enable/disable train stops', function () {
       const input = '0eNqdlsFu2zAMht+FZ7uIZCf1fOihxwK9DdihKAzFZhMCtmxIctAg8LtPtIcsWxKA7SUGJfHjT1KEcoJtO+LgyAYoT0B1bz2UbyfwtLOm5bVwHBBKoIAdJGBNx5Yz1MKUANkGP6FU03sCaAMFwsV/No6VHbstunjg7Bmiq0196IdIG3ofXXrLcSImVTqBY/zqiG7IYb1sbhKIwoLr22qLe3Og3rFHTa4eKVRxrzljPsj5UF3JP5ALY1w561hOpMYew57sjpPh5IPhSqzY6AbjTOBQ8DRv/wmH1mxbrBry/IUyuBET8GibKvTVnB+UH6b1cXW2Ks52wEau6idMix67lMCzj+Ifh81lfSlaenrn01H6UgN4/fXy8hwVX3VBn+N02NDYpdhGvqM6HfqYyXU/1g/rpSHqYS0XpC5Cs52xwBtysi/KUd9So/9Tk99Rk39RTfEtNfdqsf57BfjO7PYhnWfsxozkc9jVvyOibzA3cqaWMh/lzJWUWYiZhRT5Q4zcSJGcj5Ap7pBSYqa4Q0pLmeIGqUyKlKvMpUh5McUzJO+5eITEN1OJJ0g+QEo8QfcGPT7f8wNfXvwfSOCAzi8PcPGoVZFtVlk+Tb8BQcK+7A==';
+      const decoded = util.decode[0](input);
+      console.log("decoded json: ", decoded);
+      console.log("Entity: ", decoded.blueprint.entities[0]);
+      console.log("decoded json / positions: ", util.decode[0](input).blueprint.entities.map(e => {
+        return {
+          name: e.name,
+          position: e.position
+        };
+      }));
       const bp = new Blueprint().load(input);
       const train_stop = bp.findEntity(new Victor(-12, -2));
-      const decoded = util.decode[0](input);
-//      console.log("Entity: ", decoded.blueprint.entities[0]);
+//      console.log('all entities', bp.entityPositionGrid);
 //      console.log("Circuit Condition: ", decoded.blueprint.entities[0].control_behavior.circuit_condition);
 //      console.log("Circuit Enable/Disable: ", decoded.blueprint.entities[0].control_behavior.circuit_enable_disable);
 //      console.log("Train Stopped Signal: ", decoded.blueprint.entities[0].control_behavior.train_stopped_signal);
 //      console.log("Parsed Blueprint Condition: ", train_stop.condition);
 
       assert.equal(train_stop.name, "train_stop");
-      assert.equal(train_stop.position.x, -12.5);
-      assert.equal(train_stop.position.y, -2.5);
+      // XXX need to switch mode between odd-integral and even-integral.
+      assert.equal(train_stop.position.x, -13);
+      assert.equal(train_stop.position.y, -3);
       assert.equal(train_stop.condition.controlEnable, true);
       assert.equal(train_stop.condition.left, 'signal_anything');
       assert.equal(train_stop.condition.operator, '>');

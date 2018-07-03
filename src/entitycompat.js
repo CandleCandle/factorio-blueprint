@@ -47,6 +47,7 @@ module.exports = function (entityData) {
       features.push(entitytypes.Direction);
       features.push(entitytypes.Position);
       features.push(entitytypes.Connections); // XXX Not every entity can actually accept connections, but most can, so until we can define this on a type-by-type basis, enable it for everything.
+      features.push(entitytypes.CircuitControl); // XXX Not every entity has circuit control, but enough can, and there's no defining feature to them that I can identify, so until we can define it in the defaultentities, enable it by default.
     }
     if (name.endsWith('filter_inserter') || name.endsWith('filter-inserter')) {
       features.push(entitytypes.Filter);
@@ -60,10 +61,10 @@ module.exports = function (entityData) {
     if (name.includes('assembling')) {
       features.push(entitytypes.Recipe);
     }
-    if (staticEntityData.modules) {
-      features.push(entitytypes.Modules);
-    }
 
+//    if (name.endsWith('combinator')) {
+//      features.push(entitytypes.Combinator);
+//    }
 
     console.log("using features: ", features);
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
@@ -182,6 +183,17 @@ module.exports = function (entityData) {
     }
     get filters() {
       return this.wrapped.filters();
+    }
+    get condition() {
+      const result = {
+        controlEnable: this.wrapped.circuitControlEnabled(),
+        constant: this.wrapped.circuitControlConstant(),
+        operator: this.wrapped.circuitControlComparator()
+      };
+      if (this.wrapped.circuitControlFirstSignal()) result.left = this.wrapped.circuitControlFirstSignal().name.replace(/-/g, '_');
+      if (this.wrapped.circuitControlSecondSignal()) result.right = this.wrapped.circuitControlSecondSignal().name.replace(/-/g, '_');
+      if (this.wrapped.circuitControlConstant()) result.right = this.wrapped.circuitControlConstant();
+      return result;
     }
     // TODO implement request filter mixin.
 //    get requestFilters() {

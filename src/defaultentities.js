@@ -659,8 +659,8 @@ module.exports = { // ADD MORE (vanilla) AS YOU PLEASE (or modded if it's just f
   },
   power_switch: {
     type: item,
-    width: 3,
-    height: 3
+    width: 2,
+    height: 2
   },
 
   gun_turret: {

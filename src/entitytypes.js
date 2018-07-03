@@ -237,11 +237,17 @@ const Position = (superclass) => class extends superclass {
       if (obj.position) {
         // move the actual coordinates to the centre of the entity then move to the top-left corner.
         const size = this.effectiveSize();
-        this.position(
-          new Victor(obj.position.x, obj.position.y)
+        const pos = new Victor(obj.position.x, obj.position.y)
             .add(new Victor(0.5, 0.5))
-            .subtract(size.clone().divide(new Victor(2,2)))
-        );
+            .subtract(size.clone().divide(new Victor(2,2)));
+        // XXX normally, the coordinates are the centre of the entity minus
+        // (0.5,0.5), leading to 1x1,3x3,etc entities having integral positions
+        // and 2x2,4x4,etc entities having '.5' offsets, however, if the
+        // blueprint has rails then this is reversed with the even dimensions
+        // having integral coordinates.
+        pos.x = Math.floor(pos.x);
+        pos.y = Math.floor(pos.y);
+        this.position(pos);
       }
 
     }
@@ -368,22 +374,27 @@ const CircuitControl = (superclass) => class extends superclass {
       return this._property('_circuitControlComparator', value);
     }
 
+    circuitControlEnabled(value) {
+      return this._property('_circuitControlEnabled', value);
+    }
+
     fromObject(obj) {
       super.fromObject(obj);
-      if (obj.circuit_condition) {
-        const cc = obj.circuit_condition;
+      if (obj.control_behavior && obj.control_behavior.circuit_condition) {
+        const cc = obj.control_behavior.circuit_condition;
+        if (obj.control_behavior.circuit_enable_disable) this.circuitControlEnabled(obj.control_behavior.circuit_enable_disable);
         if (cc.first_signal) this.circuitControlFirstSignal(cc.first_signal.name, cc.first_signal.type);
         if (cc.second_signal) this.circuitControlSecondSignal(cc.second_signal.name, cc.second_signal.type);
         if (cc.constant) this.circuitControlConstant(cc.constant);
         if (cc.comparator) this.circuitControlComparator(cc.comparator);
       }
-      if (obj.bar) this.bar(obj.bar);
     }
 
 
     toObject() {
       const mine = {
         control_behavior: {
+          circuit_enable_disable: this.circuitControlEnabled(),
           circuit_condition: {
             first_signal: this.circuitControlFirstSignal(),
             comparator: this.circuitControlComparator(),

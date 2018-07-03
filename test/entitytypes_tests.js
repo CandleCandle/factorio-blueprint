@@ -359,12 +359,16 @@ describe('Entity Features', function () {
         const entity = new ControlEntity();
         entity.fromObject({
           name: "something",
-          circuit_condition: {
-            first_signal: { type: 'item', name: 'electronic-circuit' },
-            constant: 40,
-            comparator: '>'
+          control_behavior: {
+            circuit_enable_disable: true,
+            circuit_condition: {
+              first_signal: { type: 'item', name: 'electronic-circuit' },
+              constant: 40,
+              comparator: '>'
+            }
           }
         });
+        assert.equal(entity.circuitControlEnabled(), true);
         assert.equal(entity.circuitControlFirstSignal().type, 'item');
         assert.equal(entity.circuitControlFirstSignal().name, 'electronic-circuit');
         assert.equal(entity.circuitControlConstant(), 40);
@@ -389,10 +393,12 @@ describe('Entity Features', function () {
       it('can read from an input object', function () {
         const entity = new ControlEntity();
         entity.fromObject({
-          circuit_condition: {
-            first_signal: { type: 'item', name: 'electronic-circuit' },
-            second_signal: { type: 'item', name: 'wood' },
-            comparator: '='
+          control_behavior: {
+            circuit_condition: {
+              first_signal: { type: 'item', name: 'electronic-circuit' },
+              second_signal: { type: 'item', name: 'wood' },
+              comparator: '='
+            }
           }
         });
         assert.equal(entity.circuitControlFirstSignal().type, 'item');
