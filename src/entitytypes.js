@@ -448,8 +448,7 @@ const CircuitControl = (superclass) => class extends superclass {
 
             constant: this.circuitControlConstant(),
             second_signal: this.circuitControlSecondSignal()
-          },
-          circuit_enable_disable: true
+          }
         }
       };
 
