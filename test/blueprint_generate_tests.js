@@ -90,7 +90,6 @@ describe('Blueprint Generation', function () {
       
       const obj = bp.toObject();
 
-      console.log("final obj: ", obj);
       assert.equal(obj.blueprint.entities[0].direction, 0);
       assert.equal(obj.blueprint.entities[0].name, "stack-filter-inserter");
       assert.equal(obj.blueprint.entities[0].filters[0].index, 1); // TODO possible bug here; the parse test has it indexed from 0.
@@ -195,9 +194,6 @@ describe('Blueprint Generation', function () {
 
       const obj = bp.toObject();
 
-      console.log("final obj: ", obj.blueprint.entities);
-      console.log("final obj: ", obj.blueprint.entities[0].connections);
-      console.log("final obj: ", obj.blueprint.entities[0].connections['1']);
       assert.equal(obj.blueprint.entities[0].name, "medium-electric-pole");
       assert.equal(obj.blueprint.entities[0].entity_number, 1);
       assert.equal(obj.blueprint.entities[0].connections['1'].red[0].entity_id, 2);

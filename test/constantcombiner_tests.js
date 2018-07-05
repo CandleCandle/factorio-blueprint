@@ -6,7 +6,7 @@ const mixwith = require('mixwith');
 
 
 describe('Entity Features', function () {
-  describe('constant', function() {
+  describe('constant combiners', function() {
     const ConstantCombinatorEntity = mixwith.mix(entity.BaseEntity).with(entity.ConstantCombinator);
     it('can read from an input object', function () {
       const entity = new ConstantCombinatorEntity();

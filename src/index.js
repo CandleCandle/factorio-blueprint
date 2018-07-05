@@ -130,7 +130,6 @@ class Blueprint {
   // Creates an entity with a data object instead of paramaters
   createEntityWithData(data, allowOverlap, noPlace, center) {
     const ent = new Entity(data, this.entityPositionGrid, this, center);
-//    console.log("entity: ", ent);
     if (allowOverlap || ent.checkNoOverlap(this.entityPositionGrid)) {
       if (!noPlace) ent.place(this.entityPositionGrid, this.entities);
       this.entities.push(ent);

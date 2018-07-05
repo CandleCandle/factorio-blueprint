@@ -230,9 +230,6 @@ describe('Blueprint Parsing', function () {
     it('basic setup', function () {
       const input = '0eNqNkdFqwzAMRf9Fzw7UyehCfmWU4jjaJrDl4DihIfjfJ7tQCoXRFxuZq3t15ANGt+IciRMMB5ANvMDwdcBCP2xceUv7jDAAJfSggI0vVdElw6mxwY/EJoUIWQHxhDcYdL4oQE6UCO92tdivvPoRowj+NVIwh0V6A5d88Ws6BbtcWiKkIcXgriP+mo1ELZJvcgnjW4ObaTNscWosRbtSgmq5Fvz+9ADo8+UexWjLHEvx0+WIOD0DkVStiHNWL5DtI9TjRKtv0IlbJNvMweErZVsh9fvBugbLqivi8PSVCjbZR7U+95+t7rvzqfvI+Q/5g6g5';
       const decoded = util.decode[0](input);
-      console.log("decoded: ", decoded.blueprint.entities[0]);
-      console.log("decoded control: ", decoded.blueprint.entities[0].control_behavior);
-      console.log("decoded filters: ", decoded.blueprint.entities[0].control_behavior.filters);
       const bp = new Blueprint().load(input);
 
       const entity = bp.findEntity(new Victor(-3,-1));

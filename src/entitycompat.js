@@ -32,10 +32,8 @@ module.exports = function (entityData) {
    */
   // TODO convert this to a static function in Entity so that it can be tested externally.
   function createType(name) {
-//        console.log(entityData);
     const staticEntityData = entityData[nameToKey(name)];
-    console.log("static data for: ", name, nameToKey(name), staticEntityData);
-
+    
     // least specific to the most specific; thus any specific implementation
     // can override the generic implementation.
     // the following guess-work could be pushed into the entitydata as an
@@ -72,7 +70,6 @@ module.exports = function (entityData) {
       features.push(entitytypes.ConstantCombinator);
     }
 
-    console.log("using features: ", features);
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
   }
 
@@ -80,9 +77,7 @@ module.exports = function (entityData) {
     constructor(data, _positionGrid, _bp, center) {
       this.wrapped = new (getType(data.name))();
       const mergedEntityData = {...entityData[nameToKey(data.name)], ...data};
-      console.log("merged entity data: ", mergedEntityData);
       this.wrapped.fromObject(mergedEntityData);
-      console.log("final wrapped: ", this.wrapped);
     }
 
     checkNoOverlap(positionGrid) {
