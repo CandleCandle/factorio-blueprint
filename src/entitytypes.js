@@ -2,13 +2,37 @@
 
 /* Current problems:
  *
+ *
+ * * Grid Modes *
+ * When there is a rail, train stop (or rail signal?) then the json-to-object
+ * conversion is:
+ * $position-($size/2)
+ * This is the half-odd mode. (odd dimensions have coordinates that are not integral)
+ * e.g.
+ * {
+ *   "name": "straight-rail",
+ *   "position": {
+ *     "x": -8,
+ *     "y": 6
+ *   }
+ * }
+ * width = 2; height = 2.
+ * --> top corner is (-9, 5)
+ *
+ * When there are no rails then the json-to-object conversion is:
+ * $position+0.5-($size/2)
+ * This is the half-even mode. (odd dimensions have coordinates that are integral)
+ *
+ *
  * * Signals *
  * the circuit system not the train system.
  * Currently a random object with two fields - name and type.
  * I have yet to see a case where there isn't a 1:1 mapping between name and type;
  * i.e. when name is 'stone', type is always 'item'
- * Therefore I propose a Signal class that knows about this mapping, and just
+ * 
+ * -- ANSWER: Therefore I propose a Signal class that knows about this mapping, and just
  * renders the type based on the name.
+ *
  *
  *
  * * tileDataAction *
@@ -140,6 +164,7 @@ module.exports = {
   Filter: require('./entitymixins/filter'),
   LogisticFilter: require('./entitymixins/logisticfilter'),
   Direction: require('./entitymixins/direction'),
+  DirectionType: require('./entitymixins/directiontype'),
   Position: require('./entitymixins/position'),
   Inventory: require('./entitymixins/inventory'),
   CircuitControl: require('./entitymixins/circuitcontrol'),

@@ -54,10 +54,10 @@ module.exports = function (entityData) {
       features.push(entitytypes.Inventory);
       features.push(entitytypes.LogisticFilter); // XXX assume entities that have an inventory can also have logistic filters.
     }
-    if (staticEntityData.modules) {
+    if (typeof staticEntityData.modules !== 'undefined') {
       features.push(entitytypes.Modules);
     }
-    if (name.includes('assembling')) {
+    if (staticEntityData.recipe === true || name.includes('assembling')) {
       features.push(entitytypes.Recipe);
     }
     if (name.match(/decider[-_]combinator/)) {
@@ -68,6 +68,9 @@ module.exports = function (entityData) {
     }
     if (name.match(/constant[-_]combinator/)) {
       features.push(entitytypes.ConstantCombinator);
+    }
+    if (name.match(/underground[-_]belt/)) {
+      features.push(entitytypes.DirectionType);
     }
 
     return mixwith.mix(entitytypes.BaseEntity).with(...features);

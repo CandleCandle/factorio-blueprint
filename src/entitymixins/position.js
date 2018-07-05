@@ -1,6 +1,15 @@
 const Victor = require('victor');
 
 /**
+ * dimensions that are even (2x2) have positions that have are $centre-0.5
+ * dimensions that are odd (1x1) have positions that have are $centre-0.5
+ */
+const grid_modes = {
+    half_even: "half-even",
+    half_odd : "half-odd"
+};
+
+/**
  * Placeable entities must have a position; and by that virtue, are highly likely
  * to also have a width and height.
  *
@@ -15,6 +24,13 @@ const Position = (superclass) => class extends superclass {
     // position: Victor
     // width: int
     // height: int
+
+    static gridModes() {
+      return grid_modes;
+    }
+    gridMode(gridMode) {
+      return this._property('_gridMode', position);
+    }
 
     position(position) {
       return this._property('_position', position);
@@ -109,3 +125,5 @@ const Position = (superclass) => class extends superclass {
   };
 
 module.exports = Position;
+
+// vi: sts=2 ts=2 sw=2 et
