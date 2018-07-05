@@ -5,6 +5,16 @@ const Victor = require('victor');
 const mixwith = require('mixwith');
 
 /* Current problems:
+ *
+ * * Signals *
+ * the circuit system not the train system.
+ * Currently a random object with two fields - name and type.
+ * I have yet to see a case where there isn't a 1:1 mapping between name and type;
+ * i.e. when name is 'stone', type is always 'item'
+ * Therefore I propose a Signal class that knows about this mapping, and just
+ * renders the type based on the name.
+ *
+ *
  * * tileDataAction *
  * tileDataAction needs to know about: position, size and direction.
  * Option 1: use if (typeof this.{function} === 'function') to detect that the resulting class is mixed with the appropriate other mixin.
@@ -25,6 +35,7 @@ const mixwith = require('mixwith');
  * tileDataAction depends-on position
  * tileDataAction depends-on size
  *
+ * -- ANSWER: None yet.
  *
  *
  * * Item Types stored using underscore based names *
@@ -42,6 +53,7 @@ const mixwith = require('mixwith');
  * if the entries become strings and are quoted like:
  * `'assembling-machine-3': { modules: 4 }`
  *
+ * -- ANSWER: refactor to use hyphens for all entity types.
  *
  *
  * * Field access on the Entity class *
@@ -63,7 +75,8 @@ const mixwith = require('mixwith');
  *
  * I think this statement allows me to change the internal behaviour and mutate
  * using 'get' methods in the compatibility layer.
- * 
+ *
+ * -- ANSWER: Modules API needed a proper API anyway, breaking this is acceptable.
  *
  */
 

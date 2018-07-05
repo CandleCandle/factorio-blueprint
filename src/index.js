@@ -4,8 +4,8 @@ const prettyJSON = require('prettyjson');
 const Victor = require('victor');
 
 const entityData = require('./defaultentities');
-//const Entity = require('./entitycompat')(entityData);
-const Entity = require('./entity')(entityData);
+const Entity = require('./entitycompat')(entityData);
+//const Entity = require('./entity')(entityData);
 const Tile = require('./tile')(entityData);
 const util = require('./util');
 
@@ -130,6 +130,7 @@ class Blueprint {
   // Creates an entity with a data object instead of paramaters
   createEntityWithData(data, allowOverlap, noPlace, center) {
     const ent = new Entity(data, this.entityPositionGrid, this, center);
+//    console.log("entity: ", ent);
     if (allowOverlap || ent.checkNoOverlap(this.entityPositionGrid)) {
       if (!noPlace) ent.place(this.entityPositionGrid, this.entities);
       this.entities.push(ent);
@@ -145,7 +146,7 @@ class Blueprint {
   }
 
   createTileWithData(data) {
-    const tile = new Tile(data, this);
+    const tile = new Tile(data, this)
     if (this.tilePositionGrid[data.position.x + ',' + data.position.y]) this.removeTile(this.tilePositionGrid[data.position.x + ',' + data.position
       .y]);
 
