@@ -59,3 +59,5 @@ const ArithmeticCombinator = (superclass) => class extends superclass {
   };
 
 module.exports = ArithmeticCombinator;
+
+// vi: sts=2 ts=2 sw=2 et

@@ -32,3 +32,6 @@ const Inventory = (superclass) => class extends superclass {
   };
 
 module.exports = Inventory;
+
+// vi: sts=2 ts=2 sw=2 et
+

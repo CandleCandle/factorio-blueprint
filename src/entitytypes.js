@@ -106,6 +106,15 @@
  *
  * Subclasses should override toObject and fromObject; ensuring that they
  * call the appropriate super.toObject / super.fromObject.
+ *
+ * Basic properties should use the _property(...) function to wrap the
+ * getter/setter behaviour.
+ *
+ * Properties should be prefixed with an underscore to indicate that they
+ * are 'private'.
+ *
+ * Basic properties shound generally map to an element in the json; with
+ * additional functions to provide a more friendly interface.
  */
 class BaseEntity {
   // name
@@ -161,6 +170,7 @@ class BaseEntity {
 
 module.exports = {
   BaseEntity: BaseEntity,
+  MiningDrill: require('./entitymixins/miningdrill'),
   Filter: require('./entitymixins/filter'),
   LogisticFilter: require('./entitymixins/logisticfilter'),
   Direction: require('./entitymixins/direction'),

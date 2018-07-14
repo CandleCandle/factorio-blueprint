@@ -41,3 +41,6 @@ const Modules = (superclass) => class extends superclass {
   };
 
 module.exports = Modules;
+
+// vi: sts=2 ts=2 sw=2 et
+

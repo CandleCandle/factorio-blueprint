@@ -44,3 +44,6 @@ const DeciderCombinator = (superclass) => class extends superclass {
 };
 
 module.exports = DeciderCombinator;
+
+// vi: sts=2 ts=2 sw=2 et
+

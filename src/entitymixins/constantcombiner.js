@@ -54,3 +54,6 @@ const ConstantCombinator = (superclass) => class extends superclass {
 };
 
 module.exports = ConstantCombinator;
+
+// vi: sts=2 ts=2 sw=2 et
+

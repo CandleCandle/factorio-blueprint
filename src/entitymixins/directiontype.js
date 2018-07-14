@@ -20,3 +20,6 @@ const DirectionType = (superclass) => class extends superclass {
   };
 
 module.exports = DirectionType;
+
+// vi: sts=2 ts=2 sw=2 et
+

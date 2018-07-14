@@ -122,3 +122,6 @@ const Connections = (superclass) => class extends superclass {
   };
 
 module.exports = Connections;
+
+// vi: sts=2 ts=2 sw=2 et
+
