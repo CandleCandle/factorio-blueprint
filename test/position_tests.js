@@ -76,7 +76,30 @@ describe('Entity Features', function () {
         });
         const visited = {};
         entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+        assert.equal(Object.keys(visited).length, 1);
         assert.equal(visited["5,42"], 1);
+      });
+      it('performs an action for all tiles for a single 3x3 square entity', function () {
+        const entity = new PositionEntity();
+        entity.fromObject({
+          name: 'stone-wall',
+          width: 3,
+          height: 3
+        });
+        entity.x(0).y(0);
+
+        const visited = {};
+        entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+        assert.equal(Object.keys(visited).length, 9);
+        assert.equal(visited["0,0"], 1);
+        assert.equal(visited["1,0"], 1);
+        assert.equal(visited["2,0"], 1);
+        assert.equal(visited["0,1"], 1);
+        assert.equal(visited["1,1"], 1);
+        assert.equal(visited["2,1"], 1);
+        assert.equal(visited["0,2"], 1);
+        assert.equal(visited["1,2"], 1);
+        assert.equal(visited["2,2"], 1);
       });
       it('performs an action for all tiles for a 2x2 square entity', function () {
         const entity = new PositionEntity();
@@ -88,6 +111,7 @@ describe('Entity Features', function () {
         });
         const visited = {};
         entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+        assert.equal(Object.keys(visited).length, 4);
         assert.equal(visited["0,0"], 1);
         assert.equal(visited["1,0"], 1);
         assert.equal(visited["0,1"], 1);
@@ -112,6 +136,7 @@ describe('Entity Features', function () {
             });
             const visited = {};
             entity.tileDataAction((x,y) => visited[x + "," + y] = 1);
+            assert.equal(Object.keys(visited).length, 6);
             if (rotation === 0 || rotation === 4) {
               assert.equal(visited["0,0"], 1);
               assert.equal(visited["0,1"], 1);
