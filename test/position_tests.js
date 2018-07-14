@@ -44,8 +44,8 @@ describe('Entity Features', function () {
     it('can output to an object', function () {
       const entity = new PositionEntity().name('stone-wall')
               .width(1).height(1) // normally set when the entity is created, from the static entitydata.
-              .x(4)
-              .y(7)
+              .x(4).y(7)
+              .gridMode(PositionEntity.gridModes().half_even) // normally calculated by the wrapping blueprint; half_even means there were no rails-related items in the blueprint.
               ;
       const obj = entity.toObject();
       assert.equal(obj.name, 'stone-wall');
@@ -56,12 +56,59 @@ describe('Entity Features', function () {
       const entity = new PositionDirectionEntity().name('boiler')
               .x(4).y(7).direction(2)
               .width(3).height(2) // normally set when the entity is created, from the static entitydata.
+              .gridMode(PositionEntity.gridModes().half_even) // normally calculated by the wrapping blueprint; half_even means there were no rails-related items in the blueprint.
               ;
       const obj = entity.toObject();
       assert.equal(obj.name, 'boiler');
       // add 1/2 the size, then subtract 0.5, 0.5.
       assert.equal(obj.position.x, 4.5);
       assert.equal(obj.position.y, 8);
+    });
+    describe('half-even and half-odd coordinate systems', function() {
+      describe('can convert from half-even centre to top-left', function() {
+        // When there are no rails then the json-to-object conversion is:
+        // $position+0.5-($size/2)
+        // This is the half-even mode. (odd dimensions have coordinates that are integral)
+        const inputData = [
+          {centre: new Victor(0,0),     size: new Victor(1,1), expected: new Victor(0,0)},
+          {centre: new Victor(1.5,5.5), size: new Victor(2,2), expected: new Victor(1,5)},
+          {centre: new Victor(4,7),     size: new Victor(3,3), expected: new Victor(3,6)},
+          {centre: new Victor(8.5,3.5), size: new Victor(4,4), expected: new Victor(7,2)},
+          {centre: new Victor(1,4),     size: new Victor(5,5), expected: new Victor(-1,2)},
+
+          {centre: new Victor(4.5,0),   size: new Victor(4,1), expected: new Victor(3,0)},
+          {centre: new Victor(5,-1.5),  size: new Victor(3,6), expected: new Victor(4,-4)}
+        ];
+        inputData.forEach(data => {
+          it('moves ' + data.centre + ' to ' + data.expected, function() {
+            const result = PositionEntity.coordinatesCentreToTopLeft(data.centre, data.size, PositionEntity.gridModes().half_even);
+            assert.equal(result.x, data.expected.x);
+            assert.equal(result.y, data.expected.y);
+          });
+        });
+      });
+      describe('can convert from half-odd centre to top-left', function() {
+        // When there are rails then the json-to-object conversion is:
+        // $position-($size/2)
+        // This is the half-odd mode. (even dimensions have coordinates that are integral)
+        const inputData = [
+          {centre: new Victor(0.5,0.5), size: new Victor(1,1), expected: new Victor(0,0)},
+          {centre: new Victor(2,6),     size: new Victor(2,2), expected: new Victor(1,5)},
+          {centre: new Victor(4.5,7.5), size: new Victor(3,3), expected: new Victor(3,6)},
+          {centre: new Victor(9,4),     size: new Victor(4,4), expected: new Victor(7,2)},
+          {centre: new Victor(1.5,4.5), size: new Victor(5,5), expected: new Victor(-1,2)},
+
+          {centre: new Victor(5,0.5),   size: new Victor(4,1), expected: new Victor(3,0)},
+          {centre: new Victor(5.5,-1),  size: new Victor(3,6), expected: new Victor(4,-4)}
+        ];
+        inputData.forEach(data => {
+          it('moves ' + data.centre + ' to ' + data.expected, function() {
+            const result = PositionEntity.coordinatesCentreToTopLeft(data.centre, data.size, PositionEntity.gridModes().half_odd);
+            assert.equal(result.x, data.expected.x);
+            assert.equal(result.y, data.expected.y);
+          });
+        });
+      });
     });
 
     describe('tileDataAction', function () {

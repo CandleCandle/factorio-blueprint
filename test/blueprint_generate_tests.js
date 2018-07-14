@@ -203,6 +203,33 @@ describe('Blueprint Generation', function () {
       assert.equal(obj.blueprint.entities[1].connections['1'].red[0].entity_id, 1);
     });
   });
+
+  describe('positions & overlap', function() {
+    it('can build a simple tilable mining blueprint', function () {
+
+      var miners = new Blueprint();
+      miners.name = "Miners - Express";
+
+      const e1 = miners.createEntity("electric_mining_drill", {x: 0, y: 0}, Blueprint.RIGHT);
+      miners.createEntity("electric_mining_drill", {x: 0, y: 3}, Blueprint.RIGHT);
+      miners.createEntity("electric_mining_drill", {x: 0, y: 6}, Blueprint.RIGHT);
+      miners.createEntity("electric_mining_drill", {x: 4, y: 0}, Blueprint.LEFT);
+      miners.createEntity("electric_mining_drill", {x: 4, y: 3}, Blueprint.LEFT);
+      miners.createEntity("electric_mining_drill", {x: 4, y: 6}, Blueprint.LEFT);
+
+      miners.createEntity("express_transport_belt", {x: 3, y: 0}, Blueprint.UP);
+      miners.createEntity("express_transport_belt", {x: 3, y: 1}, Blueprint.UP);
+      miners.createEntity("express_underground_belt", {x: 3, y: 2}, Blueprint.UP).setDirectionType("output");
+      miners.createEntity("medium_electric_pole", {x: 3, y: 3});
+      miners.createEntity("express_underground_belt", {x: 3, y: 4}, Blueprint.UP).setDirectionType("input");
+      miners.createEntity("express_transport_belt", {x: 3, y: 5}, Blueprint.UP);
+      miners.createEntity("express_transport_belt", {x: 3, y: 6}, Blueprint.UP);
+      miners.createEntity("express_transport_belt", {x: 3, y: 7}, Blueprint.UP);
+      miners.createEntity("express_transport_belt", {x: 3, y: 8}, Blueprint.UP);
+
+      //
+    });
+  });
 });
 
 // vi: sts=2 ts=2 sw=2 et

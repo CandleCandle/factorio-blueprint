@@ -51,6 +51,13 @@ class Blueprint {
 
     this.name = data.label;
     this.version = data.version;
+    
+    const hasRails = data.entities.some(entity => {
+        if (entity.name.match(".*[-_]rail")) return true;
+        if (entity.name.match("train[-_]stop")) return true;
+        if (entity.name.match("rail[-_](chain[-_])?signal")) return true;
+    }, false);
+    const gridMode = ( hasRails ? "half_odd" : "half_even" );
 
     data.entities.forEach(entity => {
       if (opt.fixEntityData) {
@@ -58,6 +65,7 @@ class Blueprint {
         data[this.jsName(entity.name)] = { type: 'item', width: 1, height: 1 };
         Blueprint.setEntityData(data);
       }
+      entity.gridMode = gridMode;
       this.createEntityWithData(entity, opt.allowOverlap, true, true); // no overlap (unless option allows it), place altogether later, positions are their center
     });
     this.entities.forEach(entity => {
@@ -254,7 +262,17 @@ class Blueprint {
   toObject() {
     this.setIds();
     if (!this.icons.length) this.generateIcons();
+
+    const hasRails = this.entities.some(entity => {
+        if (entity.name.match(".*[-_]rail")) return true;
+        if (entity.name.match("train[-_]stop")) return true;
+        if (entity.name.match("rail[-_](chain[-_])?signal")) return true;
+    }, false);
+    const gridMode = ( hasRails ? "half_odd" : "half_even" );
+
     const entityInfo = this.entities.map((ent, i) => {
+      ent.id = i+1;
+      ent.gridMode = gridMode;
       const entData = ent.getData();
 
       entData.entity_number = i + 1;

@@ -77,10 +77,19 @@ module.exports = function (entityData) {
   }
 
   class Entity {
-    constructor(data, _positionGrid, _bp, center) {
-      this.wrapped = new (getType(data.name))();
+    /**
+     * data should have coordinates in 'centre' mode.
+     */
+    constructor(data, _positionGrid, _bp, centre) {
+      const Type = getType(data.name);
+      this.wrapped = new Type();
       const mergedEntityData = {...entityData[nameToKey(data.name)], ...data};
       this.wrapped.fromObject(mergedEntityData);
+      if (!centre && typeof this.wrapped.position === 'function') {
+        // fix the position corrdinates as 'fromObject' is intended for parsing
+        // raw blueprints and not for client JS created entities.
+        this.wrapped.x(mergedEntityData.position.x).y(mergedEntityData.position.y);
+      }
     }
 
     checkNoOverlap(positionGrid) {
@@ -102,9 +111,7 @@ module.exports = function (entityData) {
      * @param {type} entities list of all entities; All entities MUST have a number.
      */
     place(entityPositionGrid, entities) {
-      entities.forEach(e => { // e in this case is an entitycompat.
-        e.tileDataAction({}, (x, y) => entityPositionGrid[x+','+y] = e );
-      });
+      this.tileDataAction({}, (x, y) => entityPositionGrid[x+','+y] = this );
       this.updateConnections(entities);
     }
 
@@ -144,6 +151,10 @@ module.exports = function (entityData) {
 
     setFilter(idx, type) {
       this.wrapped.withFilter(idx, type);
+    }
+
+    setDirectionType(type) {
+      this.wrapped.directionType(type);
     }
 
     connect(other, mySide, theirSide, colour) {
@@ -190,6 +201,9 @@ module.exports = function (entityData) {
     }
     get requestFilters() {
       return this.wrapped.logisticFilters();
+    }
+    set gridMode(mode) {
+      this.wrapped.gridMode(mode);
     }
     fnApply(fnName, apply) {
       if (typeof this.wrapped[fnName] === 'function') {

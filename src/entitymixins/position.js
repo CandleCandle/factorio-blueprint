@@ -1,12 +1,12 @@
 const Victor = require('victor');
 
 /**
- * dimensions that are even (2x2) have positions that have are $centre-0.5
- * dimensions that are odd (1x1) have positions that have are $centre-0.5
+ * dimensions that are even (2x2) have positions that have are $centre+0.5-$size/2
+ * dimensions that are odd (1x1) have positions that have are $centre-$size/2
  */
 const grid_modes = {
-    half_even: "half-even",
-    half_odd : "half-odd"
+    half_even: "half_even",
+    half_odd : "half_odd" // train blueprints are half_odd.
 };
 
 /**
@@ -28,8 +28,30 @@ const Position = (superclass) => class extends superclass {
     static gridModes() {
       return grid_modes;
     }
+    static coordinatesCentreToTopLeft(coordinates, size, mode) {
+      if (mode === grid_modes.half_even) {
+        return coordinates.clone()
+            .add(new Victor(0.5, 0.5))
+            .subtract(size.clone().divide(new Victor(2,2)));
+      } else if (mode === grid_modes.half_odd) {
+        return coordinates.clone()
+            .subtract(size.clone().divide(new Victor(2,2)));
+      }
+      throw new Error('Unknown coordinates system: ' + mode + ' try any of: ' + Object.values(grid_modes));
+    }
+    static coordinatesTopLeftToCentre(coordinates, size, mode) {
+      if (mode === grid_modes.half_even) {
+        return coordinates.clone()
+            .add(size.clone().divide(new Victor(2,2)))
+            .subtract(new Victor(0.5, 0.5));
+      } else if (mode === grid_modes.half_odd) {
+        return coordinates.clone()
+            .add(size.clone().divide(new Victor(2,2)));
+      }
+      throw new Error('Unknown coordinates system: ' + mode + ' try any of: ' + Object.values(grid_modes));
+    }
     gridMode(gridMode) {
-      return this._property('_gridMode', position);
+      return this._property('_gridMode', gridMode);
     }
 
     position(position) {
@@ -89,32 +111,24 @@ const Position = (superclass) => class extends superclass {
       // Set the default width and height to 1.
       if (obj.width) { this.width(obj.width); } else { this.width(1); }
       if (obj.height) { this.height(obj.height); } else { this.height(1); }
+      if (obj.gridMode) { this.gridMode(obj.gridMode); } else { this.gridMode(grid_modes.half_even); }
 
       if (obj.position) {
         // move the actual coordinates to the centre of the entity then move to the top-left corner.
-        const size = this.effectiveSize();
-        const pos = new Victor(obj.position.x, obj.position.y)
-            .add(new Victor(0.5, 0.5))
-            .subtract(size.clone().divide(new Victor(2,2)));
-        // XXX normally, the coordinates are the centre of the entity minus
-        // (0.5,0.5), leading to 1x1,3x3,etc entities having integral positions
-        // and 2x2,4x4,etc entities having '.5' offsets, however, if the
-        // blueprint has rails then this is reversed with the even dimensions
-        // having integral coordinates.
-        pos.x = Math.floor(pos.x);
-        pos.y = Math.floor(pos.y);
-        this.position(pos);
+        this.position(this.constructor.coordinatesCentreToTopLeft(
+                new Victor(obj.position.x, obj.position.y),
+                this.effectiveSize(),
+                this.gridMode()
+        ));
       }
-
     }
 
     toObject() {
-
-      // move the actual coordinates to the centre of the entity then move to the top-left corner.
-      const size = this.effectiveSize();
-      const adjustedPosition = this.position().clone()
-        .add(size.clone().divide(new Victor(2,2)))
-        .subtract(new Victor(0.5, 0.5));
+      const adjustedPosition = this.constructor.coordinatesTopLeftToCentre(
+              this.position().clone(),
+              this.effectiveSize(),
+              this.gridMode()
+      );
       const mine = {
         position: {x: adjustedPosition.x, y: adjustedPosition.y}
       };
