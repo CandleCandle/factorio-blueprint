@@ -73,6 +73,9 @@ module.exports = function (entityData) {
     if (name.match(/underground[-_]belt/)) {
       features.push(entitytypes.DirectionType);
     }
+    if (name.match(/.*[-_]mining[-_]drill/)) {
+      features.push(entitytypes.MiningDrill);
+    }
 
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
   }
@@ -175,7 +178,7 @@ module.exports = function (entityData) {
       this.wrapped.number(id);
     }
     get id() {
-      this.wrapped.number();
+      return this.wrapped.number();
     }
     get x() {
       return this.wrapped.x();
