@@ -6,6 +6,16 @@ const MiningDrill = (superclass) => class extends superclass {
     circuitReadResourcesMode(circuitReadResourcesMode) {
       return this._property('_circuitReadResourcesMode', circuitReadResourcesMode);
     }
+    circuitReadResourcesReadEntirePatch() {
+      this.circuitReadResources(true);
+      this.circuitReadResourcesMode(1);
+      return this;
+    }
+    circuitReadResourcesReadThisMiner() {
+      this.circuitReadResources(true);
+      this.circuitReadResourcesMode(0);
+      return this;
+    }
 
     fromObject(obj) {
       super.fromObject(obj);
