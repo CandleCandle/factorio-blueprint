@@ -57,6 +57,7 @@ const Connections = (superclass) => class extends superclass {
     connectTo(otherEntity, mySide, theirSide, colour) {
       this._connections.add(new Connection(otherEntity, mySide, theirSide, colour));
       otherEntity._connections.add(new Connection(this, theirSide, mySide, colour));
+      return this;
     }
 
     fromObject(obj) {
