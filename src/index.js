@@ -275,8 +275,6 @@ class Blueprint {
       ent.gridMode = gridMode;
       const entData = ent.getData();
 
-      entData.entity_number = i + 1;
-
       return entData;
     });
     const tileInfo = this.tiles.map((tile, i) => tile.getData());
