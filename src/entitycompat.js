@@ -2,6 +2,7 @@
 
 const entitytypes = require('./entitytypes');
 const mixwith = require('mixwith');
+const Victor = require('victor');
 
 function nameToKey(name) {
   return name.replace(/-/g, '_');
@@ -111,8 +112,15 @@ module.exports = function (entityData) {
      * @param {type} entities list of all entities; All entities MUST have a number.
      */
     place(entityPositionGrid, entities) {
-      this.tileDataAction({}, (x, y) => entityPositionGrid[x+','+y] = this );
+      this.setTileData(entityPositionGrid);
       this.updateConnections(entities);
+    }
+
+    removeTileData(entityPositionGrid) {
+      this.tileDataAction({}, (x, y) => delete entityPositionGrid[x+','+y] );
+    }
+    setTileData(entityPositionGrid) {
+      this.tileDataAction({}, (x, y) => entityPositionGrid[x+','+y] = this );
     }
 
     /**
@@ -177,6 +185,28 @@ module.exports = function (entityData) {
     }
     get position() {
       return this.wrapped.position();
+    }
+    get size() {
+      return this.wrapped.effectiveSize();
+    }
+    topLeft() {
+      return this.wrapped.position();
+    }
+    topRight() {
+      return this.wrapped.position().clone()
+              .add(this.wrapped.effectiveSize().clone().multiply(new Victor(1, 0)));
+    }
+    bottomLeft() {
+      return this.wrapped.position().clone()
+              .add(this.wrapped.effectiveSize().clone().multiply(new Victor(1, 1)));
+    }
+    bottomRight() {
+      return this.wrapped.position().clone()
+              .add(this.wrapped.effectiveSize().clone().multiply(new Victor(0, 1)));
+    }
+    center() {
+      return this.wrapped.position().clone()
+              .add(this.wrapped.effectiveSize().clone().multiply(new Victor(0, 1)));
     }
     get direction() {
       return this.wrapped.direction();
