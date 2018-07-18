@@ -37,6 +37,39 @@ describe('Entity Features', function () {
       assert.equal(obj.items['speed-module'], 1);
       assert.equal(typeof obj.maxModules, 'undefined'); // maxModules comes from our entityData and therefore should not be exported
     });
+    describe('utility functions', function () {
+      it('can remove all modules', function () {
+        const entity = new ModuleEntity()
+                .name('stone-wall')
+                .modules({'speed-module': 1})
+                .maxModules(9001)
+                ;
+        entity.removeModules();
+        const obj = entity.toObject();
+        assert.equal(typeof obj.items, 'undefined');
+        assert.equal(typeof obj.maxModules, 'undefined');
+      });
+      it('can add modules', function () {
+        const entity = new ModuleEntity()
+                .name('stone-wall')
+                .maxModules(3)
+                .removeModules()
+                .withModules('speed-module', 2)
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.items['speed-module'], 2);
+        assert.equal(typeof obj.maxModules, 'undefined');
+      });
+      it('raises an error when too many modules are added', function () {
+        const entity = new ModuleEntity()
+                .name('stone-wall')
+                .maxModules(3)
+                .removeModules()
+                .withModules('speed-module', 2)
+                ;
+        assert.throws(() => entity.withModules('speed-module', 2));
+      });
+    });
   });
 });
 
