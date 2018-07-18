@@ -8,12 +8,12 @@ const MiningDrill = (superclass) => class extends superclass {
     }
     circuitReadResourcesReadEntirePatch() {
       this.circuitReadResources(true);
-      this.circuitReadResourcesMode(1);
+      this.circuitReadResourcesMode(2);
       return this;
     }
     circuitReadResourcesReadThisMiner() {
       this.circuitReadResources(true);
-      this.circuitReadResourcesMode(0);
+      this.circuitReadResourcesMode(1);
       return this;
     }
 

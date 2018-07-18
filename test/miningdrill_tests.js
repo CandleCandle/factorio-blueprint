@@ -23,7 +23,7 @@ describe('Entity Features', function () {
     });
     it('can output to an object', function () {
       const entity = new MiningEntity()
-              .name('underground-belt')
+              .name('electric-mining-drill')
               .circuitReadResources(true)
               .circuitReadResourcesMode(2) // 1="this miner" 2="whole ore patch"
               ;
@@ -31,6 +31,26 @@ describe('Entity Features', function () {
       assert.equal(obj.control_behavior.circuit_read_resources, true);
       assert.equal(obj.control_behavior.circuit_resource_read_mode, 2);
     });
+    describe('utility functions', function () {
+      it('reads entire patch', function () {
+        const entity = new MiningEntity()
+                .name('electric-mining-drill')
+                .circuitReadResourcesReadEntirePatch()
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.control_behavior.circuit_read_resources, true);
+        assert.equal(obj.control_behavior.circuit_resource_read_mode, 2);
+      });
+      it('reads entire just this miner', function () {
+        const entity = new MiningEntity()
+                .name('electric-mining-drill')
+                .circuitReadResourcesReadThisMiner()
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.control_behavior.circuit_read_resources, true);
+        assert.equal(obj.control_behavior.circuit_resource_read_mode, 1);
+      });
+    })
   });
 });
 
