@@ -16,7 +16,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "nyc mocha",
-    "prepare": "webpack -p"
+    "prepare": "webpack -p",
+    "coverage": "nyc report --reporter=html"
   },
   "directories": {
     "test": "test"
