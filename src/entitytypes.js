@@ -170,6 +170,7 @@ class BaseEntity {
 
 module.exports = {
   BaseEntity: BaseEntity,
+  RoboPort: require('./entitymixins/roboport'),
   MiningDrill: require('./entitymixins/miningdrill'),
   Filter: require('./entitymixins/filter'),
   LogisticFilter: require('./entitymixins/logisticfilter'),
