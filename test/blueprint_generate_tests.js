@@ -230,6 +230,20 @@ describe('Blueprint Generation', function () {
       //
     });
   });
+
+  describe('roboports', function () {
+    it('circuit connected roboports', function () {
+      const bp = new Blueprint();
+      bp.name = "roborus";
+      bp.createEntity('roboport', {x: 0, y: 0})
+              .wrapped
+              .circuitModeOfOperationLogisticsNetwork();
+
+      const obj = bp.toObject();
+      assert.equal(obj.blueprint.entities[0].name, "roboport");
+      assert.equal(obj.blueprint.entities[0].control_behavior.circuit_mode_of_operation, 0);
+    });
+  });
 });
 
 // vi: sts=2 ts=2 sw=2 et

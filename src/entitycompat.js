@@ -76,6 +76,9 @@ module.exports = function (entityData) {
     if (name.match(/.*[-_]mining[-_]drill/)) {
       features.push(entitytypes.MiningDrill);
     }
+    if (name.match(/roboport/)) {
+      features.push(entitytypes.RoboPort);
+    }
 
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
   }

@@ -337,6 +337,21 @@ describe('Blueprint Parsing', function () {
       assert.equal(bp.entities.filter(e => e.position.x === 1 && e.position.y === 0)[0].name, "electric_furnace");
     });
   });
+
+  describe('roboports', function () {
+    it('circuit connected roboports', function () {
+      const input = '0eNqlkt1qwzAMhd9F12mJHbp2eZVRQn60TRBbRnHKQvC7T0nYyCiDjt3YHCGd8xlrhqYfMQj5COUM1LIfoHyZYaA3X/dLLU4BoQSK6CADX7tFCTccWCKkDMh3+AGlSdcM0EeKhJvHKqbKj65B0YbvaYcdje6APbZRqD0E7lG9Aw86zH5JVcODDkx6FZqhXF6bacWbwSyHYLePIVU2ZT90ka4p7WpfKPb+Iffx9nhaAfLjaSOIwn3V4Ht9I5alqyVpR4qV4w4rfq04oNSbRf44tPkFsngA0vyH0fyVUT94XYNytzUZ3FCG1e/pcrb2Yp7zs03pE5uVzbI=';
+      const bp = new Blueprint().load(input);
+
+      const readLogisticsNetwork = bp.findEntity(new Victor(-3, 0));
+      assert.equal(readLogisticsNetwork.name, "roboport");
+      assert.equal(readLogisticsNetwork.wrapped.circuitModeOfOperation(), 0);
+
+      const readRobotStatistics = bp.findEntity(new Victor(2, 0));
+      assert.equal(readRobotStatistics.name, "roboport");
+      assert.equal(readRobotStatistics.wrapped.circuitModeOfOperation(), 1);
+    });
+  });
 });
 
 // vi: sts=2 ts=2 sw=2 et
