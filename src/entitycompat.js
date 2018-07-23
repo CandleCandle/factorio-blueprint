@@ -79,6 +79,10 @@ module.exports = function (entityData) {
     if (name.match(/roboport/)) {
       features.push(entitytypes.RoboPort);
     }
+    if (name.match(/train[-_]stop/)) {
+//      features.push(entitytypes.CircuitControl); // already there.
+      features.push(entitytypes.TrainStop);
+    }
 
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
   }

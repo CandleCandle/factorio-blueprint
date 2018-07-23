@@ -352,6 +352,52 @@ describe('Blueprint Parsing', function () {
       assert.equal(readRobotStatistics.wrapped.circuitModeOfOperation(), 1);
     });
   });
+
+  describe('train stops', function () {
+    const input = '0eNq9l9tu4jAQhl9l5WvCenw2F/sUe7eqokDc1lIOyDHVVoh333HSsC11W8JFbxJ8+v17vhkDR7JtDm4ffBfJ5kj8ru8GsvlzJIN/6Kom9cXnvSMb4qNryYp0VZtaofINOa2I72r3l2zgdLciros+ejetHxvPZXdoty7ghPPK1tX+0BaucbsY/K7Y941D3X0/4OK+SzuiYCHXckWepw+4D/rqcIEf7R0JpEdw9eutPLZw6pu2Pt2dTq/6ZjtsqR24yY6+sGM/sMMX2mE3ubEXbgA+sCPOdoaIoB8eYzHyfh8WM9lgORV5VkkiXTHEfp+RULPEeI4Y+qbcusfqyfchTdn5sDv4WOJYfV5378MQyy9S1HeDCxGdTMpDrFKOy9Ro91WoYtqA/BqHXzZxXbVtXFn7Ib3JJoaDW5HBdXUZ+3I8BtncV82AvWOrTIfau/q9lycf4qFq/tuZZhS/yel6YiMgNBCr6eRkMvhzNpiEmilO+KBrKywFq4AaA4ZKAdYyMBrP/JCGOWglNFVWWaYAlBWcS8vT+BbHV6RKs4Q1lOM6iS8QiivGqVCokoOsrk4V8Umq6OtShX2eKt9D5G0NsUtCKVmK2BdTsiwDNGFYGxg5gQbKqKTaAJO3sDHXsqGfoLFXofmCTL6Cgqvq8j707dw/ldt3YGQXGPklxuRtYlikA+HU4R1MpoWk1oDmCgwHpSSyoYrN5aaRkzJKCESkDRdCMyXH4VurDei1SD+rNoCrmKqbmc7svh1rHuPLnh+UJCisMMHBUnxIK4wwirOp5kaMklmBFWmZlhKYspLDzHCtVEoCAANpCgooMSXADWzZwm9dmlXhCy/kvIpYdnXkReSyZM2LqIVRyWe8XhiVvMrCCzUvYpdFJSvC6MKoiKwKLIxKXoUti0pehC+LCorgH47x997m1T+YFWmqrWvmi+1H29cu3dtPLgyjBBYfw9q2VGNc/wGFVi/a';
+    it('knows about the enable/disable flag', function () {
+      const bp = new Blueprint().load(input);
+
+      const stop = bp.findEntity(new Victor(-7, -3));
+      assert.equal(stop.name, "train_stop");
+      assert.equal(stop.wrapped.circuitControlEnabled(), true);
+      assert.equal(stop.wrapped.circuitControlFirstSignal().name, 'inserter');
+      assert.equal(stop.wrapped.circuitControlComparator(), '>');
+      assert.equal(stop.wrapped.circuitControlConstant(), 5);
+
+      assert.equal(stop.wrapped.stationName(), "enable/disable");
+    });
+    // source blueprint is wrong; the relevent train stop at -3, -3 doesn't have the correct settings.
+    it('knows about the send-to-train flag', function () {
+      return ;
+      const bp = new Blueprint().load(input);
+
+      const stop = bp.findEntity(new Victor(-3, -3));
+      assert.equal(stop.name, "train_stop");
+      assert.equal(stop.wrapped.sendToTrain(), true);
+
+      assert.equal(stop.wrapped.stationName(), "send-to-train");
+    });
+    it('knows about the read-train-contents flag', function () {
+      const bp = new Blueprint().load(input);
+
+      const stop = bp.findEntity(new Victor(1, -3));
+      assert.equal(stop.name, "train_stop");
+      assert.equal(stop.wrapped.readTrainContents(), true);
+
+      assert.equal(stop.wrapped.stationName(), "read-train-contents");
+    });
+    it('knows about the read-stopped-train flag', function () {
+      const bp = new Blueprint().load(input);
+
+      const stop = bp.findEntity(new Victor(5, -3));
+      assert.equal(stop.name, "train_stop");
+      assert.equal(stop.wrapped.readStoppedTrain(), true);
+      assert.equal(stop.wrapped.readStoppedTrainSignal().name, 'signal-T');
+
+      assert.equal(stop.wrapped.stationName(), "read-stopped-train");
+    });
+  });
 });
 
 // vi: sts=2 ts=2 sw=2 et
