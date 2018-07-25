@@ -364,17 +364,18 @@ describe('Blueprint Parsing', function () {
       assert.equal(stop.wrapped.circuitControlFirstSignal().name, 'inserter');
       assert.equal(stop.wrapped.circuitControlComparator(), '>');
       assert.equal(stop.wrapped.circuitControlConstant(), 5);
+      assert.equal(stop.wrapped.sendToTrain(), false);
 
       assert.equal(stop.wrapped.stationName(), "enable/disable");
     });
-    // source blueprint is wrong; the relevent train stop at -3, -3 doesn't have the correct settings.
+    // 'send-to-train=true' is the default, so it being missing is normal.
     it('knows about the send-to-train flag', function () {
       return ;
       const bp = new Blueprint().load(input);
 
       const stop = bp.findEntity(new Victor(-3, -3));
       assert.equal(stop.name, "train_stop");
-      assert.equal(stop.wrapped.sendToTrain(), true);
+      assert.equal(typeof stop.wrapped.sendToTrain(), 'undefined');
 
       assert.equal(stop.wrapped.stationName(), "send-to-train");
     });
@@ -384,6 +385,7 @@ describe('Blueprint Parsing', function () {
       const stop = bp.findEntity(new Victor(1, -3));
       assert.equal(stop.name, "train_stop");
       assert.equal(stop.wrapped.readTrainContents(), true);
+      assert.equal(stop.wrapped.sendToTrain(), false);
 
       assert.equal(stop.wrapped.stationName(), "read-train-contents");
     });
@@ -394,6 +396,7 @@ describe('Blueprint Parsing', function () {
       assert.equal(stop.name, "train_stop");
       assert.equal(stop.wrapped.readStoppedTrain(), true);
       assert.equal(stop.wrapped.readStoppedTrainSignal().name, 'signal-T');
+      assert.equal(stop.wrapped.sendToTrain(), false);
 
       assert.equal(stop.wrapped.stationName(), "read-stopped-train");
     });
