@@ -46,6 +46,7 @@ module.exports = function (entityData) {
       features.push(entitytypes.Direction);
       features.push(entitytypes.Position);
       features.push(entitytypes.Connections); // XXX Not every entity can actually accept connections, but most can, so until we can define this on a type-by-type basis, enable it for everything.
+//      features.push(entitytypes.CircuitSignals); // XXX Not every entity needs to know about circuit signals, but enough of them do for now.
       features.push(entitytypes.CircuitControl); // XXX Not every entity has circuit control, but enough can, and there's no defining feature to them that I can identify, so until we can define it in the defaultentities, enable it by default.
     }
     if (name.match(/filter[-_]inserter/)) {
@@ -82,6 +83,9 @@ module.exports = function (entityData) {
     if (name.match(/train[-_]stop/)) {
 //      features.push(entitytypes.CircuitControl); // already there.
       features.push(entitytypes.TrainStop);
+    }
+    if (name.match(/accumulator/)) {
+      features.push(entitytypes.Accumulator);
     }
 
     return mixwith.mix(entitytypes.BaseEntity).with(...features);

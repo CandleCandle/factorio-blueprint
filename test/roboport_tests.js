@@ -44,6 +44,20 @@ describe('Entity Features', function () {
         const obj = entity.toObject();
         assert.equal(obj.control_behavior.circuit_mode_of_operation, 1);
       });
+      it('output signals can be changed', function () {
+        const entity = new RoboEntity()
+                .name('roboport')
+                .availableLogisticOutputSignal({name: 'signal-Q', type: 'virtual'})
+                .totalLogisticOutputSignal({name: 'signal-W', type: 'virtual'})
+                .availableConstructionOutputSignal({name: 'signal-E', type: 'virtual'})
+                .totalConstructionOutputSignal({name: 'signal-R', type: 'virtual'})
+                ;
+        const obj = entity.toObject();
+        assert.equal(obj.control_behavior.available_logistic_output_signal.name, 'signal-Q');
+        assert.equal(obj.control_behavior.total_logistic_output_signal.name, 'signal-W');
+        assert.equal(obj.control_behavior.available_construction_output_signal.name, 'signal-E');
+        assert.equal(obj.control_behavior.total_construction_output_signal.name, 'signal-R');
+      });
     })
   });
 });

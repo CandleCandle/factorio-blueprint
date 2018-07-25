@@ -2,28 +2,6 @@
 
 /* Current problems:
  *
- *
- * * Grid Modes *
- * When there is a rail, train stop (or rail signal?) then the json-to-object
- * conversion is:
- * $position-($size/2)
- * This is the half-odd mode. (odd dimensions have coordinates that are not integral)
- * e.g.
- * {
- *   "name": "straight-rail",
- *   "position": {
- *     "x": -8,
- *     "y": 6
- *   }
- * }
- * width = 2; height = 2.
- * --> top corner is (-9, 5)
- *
- * When there are no rails then the json-to-object conversion is:
- * $position+0.5-($size/2)
- * This is the half-even mode. (odd dimensions have coordinates that are integral)
- *
- *
  * * Signals *
  * the circuit system not the train system.
  * Currently a random object with two fields - name and type.
@@ -74,29 +52,6 @@
  * `'assembling-machine-3': { modules: 4 }`
  *
  * -- ANSWER: refactor to use hyphens for all entity types.
- *
- *
- * * Field access on the Entity class *
- * The original Entity class exposes multiple fields to users; for example the
- * 'modules' field. When this is modified to add/remove modules, it bypasses any
- * encapsulation that the Entity class offers; Sample code might:
- * const e = blueprint.createEntity(...);
- * e.modules.speed_module_3 = 3;
- *
- * This bypasses any checks that might happen on the maximum allowed modules,
- * leading to having to check the module count at toObject time, moving the error
- * from the place it actually occurs to effectivly a random place.
- *
- * This also means that we cannot store the type of modules using the in-game
- * names (hyphens and not underscores)
- *
- * from the documentation:
- * Do not modify properties directly! Functions to set things such as direction or position are included because they do more than just set the variable.
- *
- * I think this statement allows me to change the internal behaviour and mutate
- * using 'get' methods in the compatibility layer.
- *
- * -- ANSWER: Modules API needed a proper API anyway, breaking this is acceptable.
  *
  */
 
@@ -170,6 +125,7 @@ class BaseEntity {
 
 module.exports = {
   BaseEntity: BaseEntity,
+  Accumulator: require('./entitymixins/accumulator'),
   RoboPort: require('./entitymixins/roboport'),
   MiningDrill: require('./entitymixins/miningdrill'),
   TrainStop: require('./entitymixins/trainstop'),
