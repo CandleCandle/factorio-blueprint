@@ -72,6 +72,9 @@ const Position = (superclass) => class extends superclass {
       return this;
     }
 
+    centre() { return this.position().clone().add(this.effectiveSize().clone().divide(new Victor(2, 2))); }
+    center() { return this.centre(); }
+
     width(width) {
       return this._property('_width', width);
     }

@@ -126,6 +126,7 @@ class BaseEntity {
 module.exports = {
   BaseEntity: BaseEntity,
   Accumulator: require('./entitymixins/accumulator'),
+  StraightRail: require('./entitymixins/straightrail'),
   RoboPort: require('./entitymixins/roboport'),
   MiningDrill: require('./entitymixins/miningdrill'),
   TrainStop: require('./entitymixins/trainstop'),

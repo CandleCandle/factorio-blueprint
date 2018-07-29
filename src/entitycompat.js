@@ -87,6 +87,9 @@ module.exports = function (entityData) {
     if (name.match(/accumulator/)) {
       features.push(entitytypes.Accumulator);
     }
+    if (name.match(/straight[-_]rail/)) {
+      features.push(entitytypes.StraightRail);
+    }
 
     return mixwith.mix(entitytypes.BaseEntity).with(...features);
   }
