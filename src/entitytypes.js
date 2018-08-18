@@ -125,24 +125,27 @@ class BaseEntity {
 
 module.exports = {
   BaseEntity: BaseEntity,
+
+  // extended functionality
   Accumulator: require('./entitymixins/accumulator'),
-  StraightRail: require('./entitymixins/straightrail'),
-  RoboPort: require('./entitymixins/roboport'),
-  MiningDrill: require('./entitymixins/miningdrill'),
-  TrainStop: require('./entitymixins/trainstop'),
-  Filter: require('./entitymixins/filter'),
-  LogisticFilter: require('./entitymixins/logisticfilter'),
+  Alarm: require('./entitymixins/alarm'),
+  ArithmeticCombinator: require('./entitymixins/arithmeticcombiner'),
+  CircuitControl: require('./entitymixins/circuitcontrol').CircuitControl,
+  Connections: require('./entitymixins/connections'),
+  ConstantCombinator: require('./entitymixins/constantcombiner'),
+  DeciderCombinator: require('./entitymixins/decidercombiner'),
   Direction: require('./entitymixins/direction'),
   DirectionType: require('./entitymixins/directiontype'),
-  Position: require('./entitymixins/position'),
+  Filter: require('./entitymixins/filter'),
   Inventory: require('./entitymixins/inventory'),
-  CircuitControl: require('./entitymixins/circuitcontrol'),
+  LogisticFilter: require('./entitymixins/logisticfilter'),
+  MiningDrill: require('./entitymixins/miningdrill'),
   Modules: require('./entitymixins/modules'),
+  Position: require('./entitymixins/position'),
   Recipe: require('./entitymixins/recipe'),
-  Connections: require('./entitymixins/connections'),
-  ArithmeticCombinator: require('./entitymixins/arithmeticcombiner'),
-  DeciderCombinator: require('./entitymixins/decidercombiner'),
-  ConstantCombinator: require('./entitymixins/constantcombiner')
+  RoboPort: require('./entitymixins/roboport'),
+  StraightRail: require('./entitymixins/straightrail'),
+  TrainStop: require('./entitymixins/trainstop')
 };
 
 // vi: sts=2 ts=2 sw=2 et

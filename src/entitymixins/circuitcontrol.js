@@ -33,7 +33,7 @@ const CircuitControl = (superclass) => class extends superclass {
         if (obj.control_behavior.circuit_enable_disable) this.circuitControlEnabled(obj.control_behavior.circuit_enable_disable);
         if (cc.first_signal) this.circuitControlFirstSignal(cc.first_signal.name, cc.first_signal.type);
         if (cc.second_signal) this.circuitControlSecondSignal(cc.second_signal.name, cc.second_signal.type);
-        if (cc.constant) this.circuitControlConstant(cc.constant);
+        if (typeof cc.constant !== 'undefined') this.circuitControlConstant(cc.constant);
         if (cc.comparator) this.circuitControlComparator(cc.comparator);
       }
     }
@@ -62,7 +62,15 @@ const CircuitControl = (superclass) => class extends superclass {
     }
   };
 
-module.exports = CircuitControl;
+module.exports = {
+  CircuitControl: CircuitControl,
+  COMP_GT_EQ: "≥",
+  COMP_GT: ">",
+  COMP_LT_EQ: "<=", // XXX fix - should be the extended character
+  COMP_LT: "<",
+  COMP_EQ: "=",
+  COMP_NEQ: "!=" // XXX fix - should be the extended character
+};
 
 // vi: sts=2 ts=2 sw=2 et
 
