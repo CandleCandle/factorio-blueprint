@@ -128,13 +128,13 @@ describe('Entity Features', function () {
               .width(2).height(2)
               .direction(1);
         const result = entity.adjacentStraight();
-        assert.equal(result[1].position.x, 13);
-        assert.equal(result[1].position.y, 11);
-        assert.equal(result[1].direction, 5);
-        assert.equal(result[5].position.x, 11);
-        assert.equal(result[5].position.y, 13);
-        assert.equal(result[5].direction, 5);
-        [0,2,3,4,6,7].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
+        assert.equal(result[3].position.x, 12);
+        assert.equal(result[3].position.y, 10);
+        assert.equal(result[3].direction, 5);
+        assert.equal(result[7].position.x, 14);
+        assert.equal(result[7].position.y, 12);
+        assert.equal(result[7].direction, 5);
+        [0,1,2,4,5,6].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
       });
       it('directions 3 and 7 are NE&SW and opposite entity direction', function () {
         const entity = new StraightRailEntity()
@@ -143,13 +143,13 @@ describe('Entity Features', function () {
               .width(2).height(2)
               .direction(7);
         const result = entity.adjacentStraight();
-        assert.equal(result[3].position.x, 13);
-        assert.equal(result[3].position.y, 13);
-        assert.equal(result[3].direction, 3);
-        assert.equal(result[7].position.x, 11);
-        assert.equal(result[7].position.y, 11);
-        assert.equal(result[7].direction, 3);
-        [0,1,2,4,5,6].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
+        assert.equal(result[1].position.x, 12);
+        assert.equal(result[1].position.y, 10);
+        assert.equal(result[1].direction, 3);
+        assert.equal(result[5].position.x, 10);
+        assert.equal(result[5].position.y, 12);
+        assert.equal(result[5].direction, 3);
+        [0,2,3,4,6,7].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
       });
     });
   });
