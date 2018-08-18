@@ -45,7 +45,9 @@ const StraightRail = (superclass) => class extends superclass {
     const result = {};
     const d = this.direction();
     console.log('this', this);
-    if (d === 0 || d === 4) {
+    switch(d) {
+    case 0:
+    case 4:
       result[0] = {
         position: this.position().clone().add({x: 0, y: -2}),
         direction: d
@@ -54,8 +56,9 @@ const StraightRail = (superclass) => class extends superclass {
         position: this.position().clone().add({x: 0, y: +2}),
         direction: d
       };
-    }
-    if (d === 1 || d === 5) {
+      break;
+    case 1:
+    case 5:
       result[3] = {
         position: this.position().clone().add({x: -1, y: -1}).add(unitForDirection(d)),
         direction: (d+4) % 8
@@ -64,8 +67,9 @@ const StraightRail = (superclass) => class extends superclass {
         position: this.position().clone().add({x: +1, y: +1}).add(unitForDirection(d)),
         direction: (d+4) % 8
       };
-    }
-    if (d === 2 || d === 6) {
+      break;
+    case 2:
+    case 6:
       result[2] = {
         position: this.position().clone().add({x: +2, y: 0}),
         direction: d
@@ -74,8 +78,9 @@ const StraightRail = (superclass) => class extends superclass {
         position: this.position().clone().add({x: -2, y: 0}),
         direction: d
       };
-    }
-    if (d === 3 || d === 7) {
+      break;
+    case 3:
+    case 7:
       result[1] = {
         position: this.position().clone().add({x: +1, y: -1}).add(unitForDirection(d)),
         direction: (d+4) % 8
@@ -84,6 +89,7 @@ const StraightRail = (superclass) => class extends superclass {
         position: this.position().clone().add({x: -1, y: +1}).add(unitForDirection(d)),
         direction: (d+4) % 8
       };
+      break;
     }
     return result;
   }
