@@ -6,6 +6,14 @@ class NextRail {
     this.position = entityPosition;
     this.direction = entityDirection;
   }
+
+  static toObject(list) {
+    return list.reduce((acc, n) => {
+      if (!acc[n.outputDirection]) acc[n.outputDirection] = [];
+      acc[n.outputDirection].push(n);
+      return acc;
+    }, {});
+  }
 }
 
 const StraightRail = (superclass) => class extends superclass {
@@ -36,33 +44,20 @@ const StraightRail = (superclass) => class extends superclass {
     }
 
   adjacentCurve() {
-    const result = {};
+    const result = [];
     const d = this.direction();
+    const p = this.position();
     switch(d) {
       case 0:
       case 4:
-        result[0] = [];
-        result[0].push({
-          position: this.position().clone().add(new Victor(-0.5, -4.5)),
-          direction: 0
-        });
-        result[0].push({
-          position: this.position().clone().add(new Victor(+1.5, -4.5)),
-          direction: 1
-        });
-        result[4] = [];
-        result[4].push({
-          position: this.position().clone().add(new Victor(+1.5, +5.5)),
-          direction: 4
-        });
-        result[4].push({
-          position: this.position().clone().add(new Victor(-0.5, +5.5)),
-          direction: 5
-        });
+        result.push(new NextRail(0, this.position().clone().add({x: -0.5, y: -4.5}), 0));
+        result.push(new NextRail(0, this.position().clone().add({x: +1.5, y: -4.5}), 1));
+        result.push(new NextRail(4, this.position().clone().add({x: +1.5, y: +5.5}), 4));
+        result.push(new NextRail(4, this.position().clone().add({x: -0.5, y: +5.5}), 5));
         break;
     }
 
-    return result;
+    return NextRail.toObject(result);
   }
 
   /**
@@ -80,56 +75,31 @@ const StraightRail = (superclass) => class extends superclass {
       default: return new Victor(0, 0);
       }
     };
-    const result = {};
+    const result = [];
     const d = this.direction();
-    console.log('this', this);
     switch(d) {
     case 0:
     case 4:
-      result[0] = {
-        position: this.position().clone().add({x: 0, y: -2}),
-        direction: d
-      };
-      result[4] = {
-        position: this.position().clone().add({x: 0, y: +2}),
-        direction: d
-      };
+      result.push(new NextRail(0, this.position().clone().add({x: 0, y: -2}), d));
+      result.push(new NextRail(4, this.position().clone().add({x: 0, y: +2}), d));
       break;
     case 1:
     case 5:
-      result[3] = {
-        position: this.position().clone().add({x: -1, y: -1}).add(unitForDirection(d)),
-        direction: (d+4) % 8
-      };
-      result[7] = {
-        position: this.position().clone().add({x: +1, y: +1}).add(unitForDirection(d)),
-        direction: (d+4) % 8
-      };
+      result.push(new NextRail(3, this.position().clone().add({x: -1, y: -1}).add(unitForDirection(d)), (d+4) % 8));
+      result.push(new NextRail(7, this.position().clone().add({x: +1, y: +1}).add(unitForDirection(d)), (d+4) % 8));
       break;
     case 2:
     case 6:
-      result[2] = {
-        position: this.position().clone().add({x: +2, y: 0}),
-        direction: d
-      };
-      result[6] = {
-        position: this.position().clone().add({x: -2, y: 0}),
-        direction: d
-      };
+      result.push(new NextRail(2, this.position().clone().add({x: +2, y: 0}), d));
+      result.push(new NextRail(6, this.position().clone().add({x: -2, y: 0}), d));
       break;
     case 3:
     case 7:
-      result[1] = {
-        position: this.position().clone().add({x: +1, y: -1}).add(unitForDirection(d)),
-        direction: (d+4) % 8
-      };
-      result[5] = {
-        position: this.position().clone().add({x: -1, y: +1}).add(unitForDirection(d)),
-        direction: (d+4) % 8
-      };
+      result.push(new NextRail(1, this.position().clone().add({x: +1, y: -1}).add(unitForDirection(d)), (d+4) % 8));
+      result.push(new NextRail(5, this.position().clone().add({x: -1, y: +1}).add(unitForDirection(d)), (d+4) % 8));
       break;
     }
-    return result;
+    return NextRail.toObject(result);
   }
   };
 
