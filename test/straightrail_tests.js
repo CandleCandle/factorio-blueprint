@@ -176,6 +176,30 @@ describe('Entity Features', function () {
         assert.equal(result[4][1].direction, 5);
         [1,2,3,5,6,7].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
       });
+      it('directions 2 and 6 have four possible curve sections', function () {
+        const entity = new StraightRailEntity()
+              .name('straight-rail')
+              .position(new Victor(17, 33))
+              .width(2).height(2)
+              .direction(2);
+        const result = entity.adjacentCurve();
+        console.log(result);
+        assert.equal(result[2].length, 2);
+        assert.equal(result[2][0].position.x, 22.5);
+        assert.equal(result[2][0].position.y, 32.5);
+        assert.equal(result[2][0].direction, 2);
+        assert.equal(result[2][1].position.x, 22.5);
+        assert.equal(result[2][1].position.y, 34.5);
+        assert.equal(result[2][1].direction, 3);
+        assert.equal(result[6].length, 2);
+        assert.equal(result[6][0].position.x, 12.5);
+        assert.equal(result[6][0].position.y, 34.5);
+        assert.equal(result[6][0].direction, 6);
+        assert.equal(result[6][1].position.x, 12.5);
+        assert.equal(result[6][1].position.y, 32.5);
+        assert.equal(result[6][1].direction, 7);
+        [0,1,3,4,5,7].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
+      });
     });
   });
 });

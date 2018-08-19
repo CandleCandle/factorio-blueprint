@@ -55,6 +55,13 @@ const StraightRail = (superclass) => class extends superclass {
         result.push(new NextRail(4, this.position().clone().add({x: +1.5, y: +5.5}), 4));
         result.push(new NextRail(4, this.position().clone().add({x: -0.5, y: +5.5}), 5));
         break;
+      case 2:
+      case 6:
+        result.push(new NextRail(2, this.position().clone().add({x: +5.5, y: -0.5}), 2));
+        result.push(new NextRail(2, this.position().clone().add({x: +5.5, y: +1.5}), 3));
+        result.push(new NextRail(6, this.position().clone().add({x: -4.5, y: +1.5}), 6));
+        result.push(new NextRail(6, this.position().clone().add({x: -4.5, y: -0.5}), 7));
+        break;
     }
 
     return NextRail.toObject(result);
