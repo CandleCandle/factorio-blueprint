@@ -226,7 +226,6 @@ describe('Entity Features', function () {
               .width(2).height(2)
               .direction(3);
         const result = entity.adjacentCurve();
-        console.log(result);
         assert.equal(result[1].length, 2);
         assert.equal(result[1][0].position.x, 6.5); // +1.5
         assert.equal(result[1][0].position.y, 25.5); // -3.5
