@@ -1,5 +1,13 @@
 const Victor = require('victor');
 
+class NextRail {
+  constructor(outputDirection, entityPosition, entityDirection) {
+    this.outputDirection = outputDirection;
+    this.position = entityPosition;
+    this.direction = entityDirection;
+  }
+}
+
 const StraightRail = (superclass) => class extends superclass {
 
     /**
@@ -27,6 +35,36 @@ const StraightRail = (superclass) => class extends superclass {
       }
     }
 
+  adjacentCurve() {
+    const result = {};
+    const d = this.direction();
+    switch(d) {
+      case 0:
+      case 4:
+        result[0] = [];
+        result[0].push({
+          position: this.position().clone().add(new Victor(-0.5, -4.5)),
+          direction: 0
+        });
+        result[0].push({
+          position: this.position().clone().add(new Victor(+1.5, -4.5)),
+          direction: 1
+        });
+        result[4] = [];
+        result[4].push({
+          position: this.position().clone().add(new Victor(+1.5, +5.5)),
+          direction: 4
+        });
+        result[4].push({
+          position: this.position().clone().add(new Victor(-0.5, +5.5)),
+          direction: 5
+        });
+        break;
+    }
+
+    return result;
+  }
+
   /**
    * returns an object with the keys being a direction; meaning "in this direction,
    * there can be a rail piece". The value is an object describing the position
@@ -35,11 +73,11 @@ const StraightRail = (superclass) => class extends superclass {
   adjacentStraight() {
     const unitForDirection = d => {
       switch (d) {
-        case 1: return new Victor(+1, -1);
-        case 3: return new Victor(+1, +1);
-        case 5: return new Victor(-1, +1);
-        case 7: return new Victor(-1, -1);
-        default: return new Victor(0, 0);
+      case 1: return new Victor(+1, -1);
+      case 3: return new Victor(+1, +1);
+      case 5: return new Victor(-1, +1);
+      case 7: return new Victor(-1, -1);
+      default: return new Victor(0, 0);
       }
     };
     const result = {};
