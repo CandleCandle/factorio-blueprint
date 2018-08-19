@@ -96,8 +96,6 @@ describe('Entity Features', function () {
               .width(2).height(2)
               .direction(0);
         const result = entity.adjacentStraight();
-        console.log(entity);
-        console.log(result);
         assert.equal(result[Blueprint.UP][0].position.x, 12);
         assert.equal(result[Blueprint.UP][0].position.y, 10);
         assert.equal(result[Blueprint.UP][0].direction, 0, 'up, direction ' + result[Blueprint.UP].d);
@@ -159,7 +157,6 @@ describe('Entity Features', function () {
               .width(2).height(2)
               .direction(0);
         const result = entity.adjacentCurve();
-        console.log(result);
         assert.equal(result[0].length, 2);
         assert.equal(result[0][0].position.x, 0.5);
         assert.equal(result[0][0].position.y, 12.5);
@@ -183,7 +180,6 @@ describe('Entity Features', function () {
               .width(2).height(2)
               .direction(2);
         const result = entity.adjacentCurve();
-        console.log(result);
         assert.equal(result[2].length, 2);
         assert.equal(result[2][0].position.x, 22.5);
         assert.equal(result[2][0].position.y, 32.5);
@@ -199,6 +195,29 @@ describe('Entity Features', function () {
         assert.equal(result[6][1].position.y, 32.5);
         assert.equal(result[6][1].direction, 7);
         [0,1,3,4,5,7].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
+      });
+      it('directions 1 and 5 have four possible curve sections', function () {
+        const entity = new StraightRailEntity()
+              .name('straight-rail')
+              .position(new Victor(5, 29))
+              .width(2).height(2)
+              .direction(1);
+        const result = entity.adjacentCurve();
+        assert.equal(result[3].length, 2);
+        assert.equal(result[3][0].position.x, 6.5);
+        assert.equal(result[3][0].position.y, 33.5);
+        assert.equal(result[3][0].direction, 0);
+        assert.equal(result[3][1].position.x, 9.5);
+        assert.equal(result[3][1].position.y, 31.5);
+        assert.equal(result[3][1].direction, 7);
+        assert.equal(result[7].length, 2);
+        assert.equal(result[7][0].position.x, 1.5);
+        assert.equal(result[7][0].position.y, 27.5);
+        assert.equal(result[7][0].direction, 3);
+        assert.equal(result[7][1].position.x, 3.5);
+        assert.equal(result[7][1].position.y, 25.5);
+        assert.equal(result[7][1].direction, 4);
+        [0,1,2,4,5,6].forEach(d => assert.equal(typeof result[d], 'undefined', "expected "+d+" to not be defined, was "+result[d]));
       });
     });
   });

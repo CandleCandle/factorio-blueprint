@@ -48,20 +48,27 @@ const StraightRail = (superclass) => class extends superclass {
     const d = this.direction();
     const p = this.position();
     switch(d) {
-      case 0:
-      case 4:
-        result.push(new NextRail(0, this.position().clone().add({x: -0.5, y: -4.5}), 0));
-        result.push(new NextRail(0, this.position().clone().add({x: +1.5, y: -4.5}), 1));
-        result.push(new NextRail(4, this.position().clone().add({x: +1.5, y: +5.5}), 4));
-        result.push(new NextRail(4, this.position().clone().add({x: -0.5, y: +5.5}), 5));
-        break;
-      case 2:
-      case 6:
-        result.push(new NextRail(2, this.position().clone().add({x: +5.5, y: -0.5}), 2));
-        result.push(new NextRail(2, this.position().clone().add({x: +5.5, y: +1.5}), 3));
-        result.push(new NextRail(6, this.position().clone().add({x: -4.5, y: +1.5}), 6));
-        result.push(new NextRail(6, this.position().clone().add({x: -4.5, y: -0.5}), 7));
-        break;
+    case 0:
+    case 4:
+      result.push(new NextRail(0, this.position().clone().add({x: -0.5, y: -4.5}), 0));
+      result.push(new NextRail(0, this.position().clone().add({x: +1.5, y: -4.5}), 1));
+      result.push(new NextRail(4, this.position().clone().add({x: +1.5, y: +5.5}), 4));
+      result.push(new NextRail(4, this.position().clone().add({x: -0.5, y: +5.5}), 5));
+      break;
+    case 1:
+    case 5:
+      result.push(new NextRail(3, this.position().clone().add({x: +1.5, y: +4.5}), 0));
+      result.push(new NextRail(7, this.position().clone().add({x: -3.5, y: -1.5}), 3));
+      result.push(new NextRail(7, this.position().clone().add({x: -1.5, y: -3.5}), 4));
+      result.push(new NextRail(3, this.position().clone().add({x: +4.5, y: +2.5}), 7));
+      break;
+    case 2:
+    case 6:
+      result.push(new NextRail(2, this.position().clone().add({x: +5.5, y: -0.5}), 2));
+      result.push(new NextRail(2, this.position().clone().add({x: +5.5, y: +1.5}), 3));
+      result.push(new NextRail(6, this.position().clone().add({x: -4.5, y: +1.5}), 6));
+      result.push(new NextRail(6, this.position().clone().add({x: -4.5, y: -0.5}), 7));
+      break;
     }
 
     return NextRail.toObject(result);
