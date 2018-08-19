@@ -133,6 +133,7 @@ module.exports = {
   CircuitControl: require('./entitymixins/circuitcontrol').CircuitControl,
   Connections: require('./entitymixins/connections'),
   ConstantCombinator: require('./entitymixins/constantcombiner'),
+  CurvedRail: require('./entitymixins/curvedrail'),
   DeciderCombinator: require('./entitymixins/decidercombiner'),
   Direction: require('./entitymixins/direction'),
   DirectionType: require('./entitymixins/directiontype'),

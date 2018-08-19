@@ -90,6 +90,9 @@ module.exports = function (entityData) {
     if (name.match(/straight[-_]rail/)) {
       features.push(entitytypes.StraightRail);
     }
+    if (name.match(/curved-[-_]rail/)) {
+      features.push(entitytypes.CurvedRail);
+    }
     if (name.match(/programmable[-_]speaker/)) {
       features.push(entitytypes.Alarm);
     }
